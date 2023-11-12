@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(fcoin_explorer explorer_main.cpp)
 
 target_include_directories(fcoin_explorer PRIVATE ../db PRIVATE ../core)
-target_link_libraries(fcoin_explorer PRIVATE fcoin_core fcoin_db)
+target_link_directories(fcoin_explorer PRIVATE fcoin_core fcoin_db)
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_explorer
