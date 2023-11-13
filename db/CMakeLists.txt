@@ -1,18 +1,14 @@
-cmake_minimum_required(VERSION 3.5)
-
 project(fcoin_db)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_library(fcoin_db STATIC
-    db.h db.cpp
+add_library(fcoin_db SHARED
+    db.h
+    block_db.h block_db.cpp
 )
 
 find_package(SQLite3 REQUIRED)
 if(SQLITE3_FOUND)
-    target_link_libraries(fcoin_db SQLite3_LIBRARIES)
-    target_include_directories(fcoin_db SQLite3_INCLUDE_DIRS)
+    target_include_directories(fcoin_db PRIVATE SQLite3_INCLUDE_DIRS)
+    target_link_libraries(fcoin_db ${SQLite3_LIBRARIES})
 endif()
 
 include(GNUInstallDirs)

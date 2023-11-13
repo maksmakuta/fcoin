@@ -2,10 +2,12 @@
 #define KEYPAIR_H
 
 
-class KeyPair
-{
+#include <array>
+#include <cstddef>
+class KeyPair{
 public:
     KeyPair();
+    static KeyPair gen(int length);
 };
 
 #endif // KEYPAIR_H

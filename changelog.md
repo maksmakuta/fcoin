@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.1.0 (beta)
+ - fix cmake to build libraries 
+ - fix sqlite import
+ - update some files
+
 ### v. 0.0.4 (beta)
  - add SQLite3 library to fcoin_db library
 

@@ -1,15 +1,11 @@
-cmake_minimum_required(VERSION 3.5)
+project(fcoin_core)
 
-project(fcoin_core LANGUAGES CXX)
-
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_library(fcoin_core  STATIC
-    blockchain.cpp blockchain.h
-    block.cpp block.h
-    transaction.cpp transaction.h
-    wallet.cpp wallet.h
+add_library(fcoin_core SHARED
+    constants.h
+    block.h block.cpp
+    blockchain.h blockchain.cpp
+    transaction.h transaction.cpp
+    wallet.h wallet.cpp
 )
 
 include(GNUInstallDirs)
