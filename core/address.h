@@ -2,8 +2,7 @@
 #define ADDRESS_H
 
 
-class address
-{
+class address{
 public:
     address();
 };

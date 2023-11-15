@@ -3,15 +3,24 @@
 
 #include <string>
 #include <vector>
+#include "constants.h"
 
 template<typename T>
 class DB{
 public:
-    DB(const std::string& fname);
+    DB(const str& fname);
+    void exec(str cmd);
     void close();
     ~DB();
     
-    virtual std::vector<T> load(std::string& cmd);
+    virtual vec<T> load(str& cmd);
+    virtual void push(vec<T> items);
+
+private:
+
+    bool isDBExist();
+    bool hasTables(str name);
+
 };
 
 #endif

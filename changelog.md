@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.1.1 (beta)
+ - make interfaces
+ - fasthash++ beta implementation
+ - some cmake fixes
+
 ### v. 0.1.0 (beta)
  - fix cmake to build libraries 
  - fix sqlite import
