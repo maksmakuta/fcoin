@@ -2,7 +2,7 @@
 #define TRANSACTION_H
 
 #include "address.h"
-#include "constants.h"
+#include "../constants.h"
 
 class transaction_in{
 public:

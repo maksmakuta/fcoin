@@ -2,8 +2,7 @@
 #define BLOCKCHAIN_H
 
 
-class blockchain
-{
+class blockchain {
 public:
     blockchain();
 };

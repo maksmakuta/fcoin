@@ -1,5 +1,5 @@
 #include "block.h"
-#include "constants.h"
+#include "../constants.h"
 
 block::block(){
     this->block_hash = "";
