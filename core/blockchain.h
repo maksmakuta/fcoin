@@ -1,10 +1,23 @@
-#ifndef BLOCKCHAIN_H
-#define BLOCKCHAIN_H
+#ifndef FCOIN_BLOCKCHAIN_H
+#define FCOIN_BLOCKCHAIN_H
 
+#include <optional>
+#include "block.h"
 
 class blockchain {
 public:
-    blockchain();
+    blockchain() = default;
+
+    void add(const block &blk);
+
+    std::optional<block> getBlock(const str &blk) const;
+    block last() const;
+    bool verify() const;
+
+private:
+    vec<block> data;
+
 };
 
-#endif // BLOCKCHAIN_H
+
+#endif //FCOIN_BLOCKCHAIN_H
