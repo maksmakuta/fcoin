@@ -18,8 +18,8 @@ add_library(fcoin_core SHARED
         crypto/secp256k1/Point.h
         crypto/ripemd160.cpp
         crypto/ripemd160.h
+        ../test/test_block.cpp
 )
-
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

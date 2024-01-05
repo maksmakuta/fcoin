@@ -1,5 +1,14 @@
 ## FCoin changelog
 
+### v. 0.2.1 (beta)
+ - gitignore fixes
+
+### v. 0.2.0 (beta)
+ - sha256 implementation
+ - ripemd160 implementation
+ - rewrite better
+ - initialization for secp256k1 algorithm (maybe drops in future)
+
 ### v. 0.1.1 (beta)
  - make interfaces
  - fasthash++ beta implementation

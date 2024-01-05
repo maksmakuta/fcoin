@@ -1,8 +1,9 @@
-project(fcoin_db)
+project(fcoin_db CXX)
+
 
 add_library(fcoin_db SHARED
-    db.h
-    block_db.h block_db.cpp
+        DB.cpp
+        DB.h
 )
 
 target_include_directories(fcoin_db PUBLIC "${CMAKE_SOURCE_DIR}/core")
