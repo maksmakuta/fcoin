@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.3.0 (beta)
+ - update source
+ - add docs folder
+ - add tests with doctest
+
 ### v. 0.2.1 (beta)
  - gitignore fixes
 
