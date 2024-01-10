@@ -9,9 +9,9 @@ public:
     sha256();
     void update(const u8 * data, size_t length);
     void update(const str &data);
-    arr<u8, 32> digest();
+    str digest();
 
-    static std::string toString(const arr<u8, 32> & digest);
+    static str fast(const str&);
 
 private:
     u8 m_data[64];

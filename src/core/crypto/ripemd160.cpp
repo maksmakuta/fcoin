@@ -3,7 +3,6 @@
 #include <iomanip>
 #include "ripemd160.h"
 
-
 /* ROL(x, n) cyclically rotates x over n bits to the left */
 /* x must be of an unsigned 32 bits type and 0 <= n < 32. */
 #define ROL(x, n) (((x) << (n)) | ((x) >> (32-(n))))

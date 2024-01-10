@@ -31,5 +31,5 @@ str merkle_tree::root(){
 str merkle_tree::hash(const str& input){
     sha256 hasher;
     hasher.update(input);
-    return sha256::toString(hasher.digest());
+    return hasher.digest();
 }

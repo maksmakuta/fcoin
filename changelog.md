@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.3.1 (beta)
+ - add node executable
+ - BigInt implementation
+ - sharand - random based on sha256 hash algorithm
+ - other improvements
+ 
 ### v. 0.3.0 (beta)
  - update source
  - add docs folder

@@ -4,6 +4,8 @@
 #include <sqlite3.h>
 #include "../core/constants.h"
 
+//typedef void(*)(int,char**) fx;
+
 class DB{
 public:
     explicit DB(const str& filename);

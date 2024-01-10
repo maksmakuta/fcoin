@@ -36,5 +36,5 @@ str block::new_hash(const str& prev_hash,u64 time,const vec<str>& tzData){
     str root = mtree.root();
     sha256 sha;
     sha.update(prev_hash + std::to_string(time) + root);
-    return sha256::toString(sha.digest());
+    return sha.digest();
 }

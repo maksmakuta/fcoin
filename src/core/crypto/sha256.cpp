@@ -31,11 +31,16 @@ void sha256::update(const str &data) {
     update(reinterpret_cast<const u8*> (data.c_str()), data.size());
 }
 
-arr<u8,32> sha256::digest() {
+str sha256::digest() {
     arr<u8,32> hash{};
     pad();
     revert(hash);
-    return hash;
+    std::stringstream s;
+    s << std::setfill('0') << std::hex;
+    for(u8 i = 0 ; i < 32 ; i++) {
+        s << std::setw(2) << (unsigned int) hash[i];
+    }
+    return s.str();
 }
 
 
@@ -140,13 +145,8 @@ void sha256::revert(arr<u8, 32> & hash) {
     }
 }
 
-str sha256::toString(const arr<u8, 32> & digest) {
-    std::stringstream s;
-    s << std::setfill('0') << std::hex;
-
-    for(u8 i = 0 ; i < 32 ; i++) {
-        s << std::setw(2) << (unsigned int) digest[i];
-    }
-
-    return s.str();
+str sha256::fast(const str& input){
+    auto s = sha256();
+    s.update(input);
+    return s.digest();
 }
