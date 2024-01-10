@@ -1,9 +1,10 @@
 #include "merkle_tree.h"
-#include "sha256.h"
+#include "sha/sha256.h"
 
 void merkle_tree::update(const str& input){
     data.push_back(hash(input));
 }
+
 void merkle_tree::update(const vec<str>& input){
     for(const str& s : input){
         update(s);
@@ -28,8 +29,7 @@ str merkle_tree::root(){
     }
     return data[0];
 }
+
 str merkle_tree::hash(const str& input){
-    sha256 hasher;
-    hasher.update(input);
-    return hasher.digest();
+    return sha256::fast(input);
 }

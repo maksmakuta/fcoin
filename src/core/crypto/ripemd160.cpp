@@ -391,3 +391,9 @@ void ripemd160::clear() {
     this->bytesHi = 0;
     this->bytesLo = 0;
 }
+
+str ripemd160::fast(const str& input){
+    ripemd160 r;
+    r.update(input);
+    return r.digest();
+}

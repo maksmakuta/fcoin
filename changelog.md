@@ -1,5 +1,12 @@
 ## FCoin changelog
 
+### v. 0.3.2 (beta)
+ - add SHA384 and SHA512 implementation
+ - update sharand to return 256,384,512-bit integers
+ - add parsing integers from base2 to base36 for BigInt
+ - working secp256k1 algorithm
+ - rewrite tests
+
 ### v. 0.3.1 (beta)
  - add node executable
  - BigInt implementation

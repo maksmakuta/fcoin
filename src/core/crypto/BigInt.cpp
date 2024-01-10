@@ -4,15 +4,11 @@
 #include <climits>
 #include <iostream>
 #include <sstream>
-#include <chrono>
 #include <iomanip>
 #include "BigInt.h"
-#include "sha256.h"
-#include "sharand.h"
 
 using namespace std;
 
-const size_t MAX_RANDOM_LENGTH = 1000;
 const long long FLOOR_SQRT_LLONG_MAX = 3037000499;
 
 BigInt::BigInt() {
@@ -117,6 +113,19 @@ std::string BigInt::to_string() const {
     return this->sign == '-' ? "-" + this->value : this->value;
 }
 
+std::string BigInt::to_hex() const{
+    std::stringstream ss;
+    BigInt number = *this;
+    while(number != 0){
+        auto t = number % 16;
+        number = number / 16;
+        ss << std::hex << std::uppercase << t.to_int();
+    }
+    str data = ss.str();
+    std::reverse(data.begin(), data.end());
+    return data;
+}
+
 int BigInt::to_int() const {
     return std::stoi(this->to_string());
 }
@@ -134,7 +143,7 @@ BigInt abs(const BigInt& num) {
 }
 
 BigInt big_pow10(size_t exp) {
-    return BigInt("1" + std::string(exp, '0'));
+    return {"1" + std::string(exp, '0')};
 }
 
 BigInt pow(const BigInt& base, int exp) {
@@ -157,16 +166,11 @@ BigInt pow(const BigInt& base, int exp) {
         exp /= 2;
     }
 
-    return result * result_odd;
+    return (result * result_odd);
 }
 
 BigInt pow(const long long& base, int exp) {
     return pow(BigInt(base), exp);
-}
-
-BigInt pow(const std::string& base, int exp) {
-    return pow(BigInt(base), exp);
-
 }
 
 BigInt sqrt(const BigInt& num) {
@@ -705,27 +709,23 @@ BigInt operator%(const std::string& lhs, const BigInt& rhs) {
 
 BigInt& BigInt::operator++() {
     *this += 1;
-
     return *this;
 }
 
 BigInt& BigInt::operator--() {
     *this -= 1;
-
     return *this;
 }
 
 BigInt BigInt::operator++(int) {
     BigInt temp = *this;
     *this += 1;
-
     return temp;
 }
 
 BigInt BigInt::operator--(int) {
     BigInt temp = *this;
     *this -= 1;
-
     return temp;
 }
 
@@ -890,63 +890,69 @@ BigInt BigInt::operator-() const {
     return temp;
 }
 
-BigInt BigInt::rand(int bits) {
-    auto len = (bits / 16) + 1;
-    std::stringstream ss;
-    std::random_device rd;
-    for(i32 i = 0;i < len;i++){
-        ss << std::hex << std::setw(2) << std::setfill('0') <<  rd() % 256;
-    }
-    str res = ss.str();
-    for(i32 i = 0;i < len / 2;i++){
-        auto a = rd() % len;
-        auto b = rd() % len;
-        if(a != b){
-            std::swap(res[a],res[b]);
-        }else{
-            i--;
-        }
-    }
-    return BigInt::fromHex(res) % pow(BigInt(2),bits);
-}
+BigInt BigInt::rand(u32 bits) {
+    auto len = bits / 8;
+    auto rem = bits % 8;
 
-int hexDigitToInt(char hexDigit) {
-    if (std::isdigit(hexDigit)) {
-        return hexDigit - '0';
-    } else {
-        i32 upperHexDigit = std::toupper(hexDigit);
-        if (upperHexDigit >= 'A' && upperHexDigit <= 'F') {
-            return upperHexDigit - 'A' + 10;
-        } else {
-            // Handle invalid hex digit
-            std::cerr << "Error: Invalid hex digit '" << hexDigit << "'" << std::endl;
-            return -1; // Indicate an error
+    std::random_device rd;
+    std::mt19937_64 gen(rd());
+    std::uniform_int_distribution<uint64_t> dist(0, 256);
+
+    std::stringstream ss;
+    if(len != 0) {
+        for (i32 i = 0; i < len; i++) {
+            ss << hex << setw(2) << setfill('0') << dist(gen);
         }
     }
+    if(rem != 0){
+        ss << hex << setw(2) << setfill('0') << (dist(gen) % (u64)(pow(2.0,rem)));
+    }
+    return BigInt::fromHex(ss.str());
 }
 
 BigInt BigInt::fromHex(const std::string& hex){
-    BigInt num;
-    BigInt base = 16;
-    u64 i = 0;
-    while(i < hex.size()){
-        u64 p = (hex.size() - 1) - i;
-        i32 t = hexDigitToInt(hex[i]);
-        num += t * pow(base,(i32)p);
-        i++;
-    }
-    return num;
+    return fromBase(hex,16);
 }
 
 BigInt BigInt::fromBin(const std::string& bin){
-    BigInt num;
-    BigInt base = 2;
-    u64 i = 0;
-    while(i < bin.size()){
-        u64 p = (bin.size() - 1) - i;
-        i32 t = bin[i] - '0';
-        num += t * pow(base,(i32)p);
-        i++;
-    }
-    return num;
+    return fromBase(bin,2);
 }
+
+static int base36_digits[36] =
+        {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+         'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+         'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+         'U', 'V', 'W', 'X', 'Y', 'Z'
+        };
+
+i32 findIndex(char c){
+    for(i32 i = 0;i < 36;i++){
+        if(c == base36_digits[i]){
+            return i;
+        }
+    }
+    return -1;
+}
+
+BigInt BigInt::fromBase(const std::string& data,int base){
+    if(base <=1 || base > 36) {
+        std::cerr << "base can be from 2 to 36 only" << std::endl;
+        return {};
+    }
+    BigInt num;
+    for(i32 i = 0;i < data.size();i++){
+        if(data[i] == '-' || data[i] == '+'){
+            continue;
+        }
+        auto p = data.size() - 1 - i;
+        i32 t = findIndex(std::toupper(data[i],std::locale::classic()));
+        if(t != 0) {
+            num += t * pow(BigInt(base), (i32)p);
+        }
+    }
+    if(!std::isdigit(data[0]) && data[0] == '-')
+        return -num;
+    else
+        return num;
+}
+

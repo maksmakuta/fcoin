@@ -1,7 +1,7 @@
 #include <utility>
 #include "block.h"
-#include "crypto/sha256.h"
 #include "crypto/merkle_tree.h"
+#include "crypto/sha/sha256.h"
 
 block::block(str hash, str prev_hash, u64 time, vec<str> tzData) {
     this->block_hash = std::move(hash);
@@ -34,7 +34,5 @@ str block::new_hash(const str& prev_hash,u64 time,const vec<str>& tzData){
     merkle_tree mtree;
     mtree.update(tzData);
     str root = mtree.root();
-    sha256 sha;
-    sha.update(prev_hash + std::to_string(time) + root);
-    return sha.digest();
+    return sha256::fast(prev_hash + std::to_string(time) + root);
 }

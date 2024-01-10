@@ -89,13 +89,15 @@ public:
 
     // Conversion functions:
     [[nodiscard]] std::string to_string() const;
+    [[nodiscard]] std::string to_hex() const;
     [[nodiscard]] int to_int() const;
     [[nodiscard]] long to_long() const;
     [[nodiscard]] long long to_long_long() const;
 
-    static BigInt rand(int bits);
+    static BigInt rand(u32 bits);
     static BigInt fromHex(const std::string& hex);
     static BigInt fromBin(const std::string& bin);
+    static BigInt fromBase(const std::string& data,int base);
 };
 
 BigInt abs(const BigInt& base);
