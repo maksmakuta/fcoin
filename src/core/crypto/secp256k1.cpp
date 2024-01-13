@@ -4,13 +4,11 @@
 #include "secp256k1.h"
 #include "sha/sha256.h"
 
-#define DEBUG true
+#define DEBUG false
 #define P  "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F"
 #define N  "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141"
 #define Gx "79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"
 #define Gy "483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8"
-#define a   0
-#define b   7
 
 static struct numbers{
     BigInt p = BigInt::fromHex(P);
@@ -37,16 +35,58 @@ secp256k1::keypair_short secp256k1::generator::genComp(){
     };
 }
 
-str secp256k1::sign(private_key &pk,const str& data){
-    return "";
+BigInt extEuclid(const BigInt& a, const BigInt& b, BigInt &x, BigInt &y){
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    BigInt r = extEuclid(b, a % b, x, y);
+    BigInt t = y;
+    y = x - (a / b) * y;
+    x = t;
+    return r;
 }
-bool secp256k1::verify(public_key &pk,const str& sign){
-    return false;
+
+BigInt modinverse(BigInt& a,BigInt &n){
+    BigInt x, y;
+    BigInt r = extEuclid(a, n, x, y);
+    if (r > 1) {
+        printf("a is not invertible\n");
+        return -1;
+    }
+    // If a and b are both positive, we have
+    // |x| < b / gcd(a, b) and |y| < a / gcd(a, b)
+    return x < 0 ? x + n : x;
+}
+
+str secp256k1::sign(private_key &pk,const str& data){
+    auto hash = sha256::fast(data);
+    BigInt h = BigInt::fromHex(hash);
+    BigInt k = BigInt::rand(256) % nums.n;
+    BigInt r = (k * nums.x) % nums.n;
+    BigInt s = (modinverse(k,nums.n) * (h + r*pk.secret) ) % nums.n;
+    if(DEBUG)std::cout << "r = " << r.to_hex() << '\n';
+    if(DEBUG)std::cout << "s = " << s.to_hex() << '\n';
+    std::stringstream ss;
+    ss << std::setw(64) << std::setfill('0') << r.to_hex();
+    ss << std::setw(64) << std::setfill('0') << s.to_hex();
+    return ss.str();
+}
+bool secp256k1::verify(public_key &pk,const str& data,const str& sign){
+    if(DEBUG) std::cout << "sign = " << sign << "\nlen = " << sign.length() << "\n";
+    auto r = BigInt::fromHex(sign.substr(0,64));
+    auto s = BigInt::fromHex(sign.substr(64,64));
+    auto z = BigInt::fromHex(sha256::fast(data));
+    auto s1 = modinverse(s,nums.n);
+    auto u1 = (z * s1) % nums.n;
+    auto u2 = (r * s1) % nums.n;
+    auto x1 = (u1 * nums.x + u2 * pk.x) % nums.n;
+    return x1 == r;
 }
 
 secp256k1::public_key secp256k1::reader::readPub(const str& data){
-    if(DEBUG)
-        std::cout << data << std::endl << "len = " << data.length() << std::endl;
+    if(DEBUG) std::cout << data << std::endl << "len = " << data.length() << std::endl;
     if(data.length() == 128){
         return public_key{
                 BigInt::fromHex(data.substr(0,64)),
@@ -60,8 +100,7 @@ secp256k1::public_key secp256k1::reader::readPub(const str& data){
     }
 }
 secp256k1::public_key_short secp256k1::reader::readPubComp(const str& data){
-    if(DEBUG)
-        std::cout << data << std::endl << "len = " << data.length() << std::endl;
+    if(DEBUG) std::cout << data << std::endl << "len = " << data.length() << std::endl;
     if(!data.empty()) {
         return public_key_short{
             BigInt::fromHex(data),
@@ -74,8 +113,7 @@ secp256k1::public_key_short secp256k1::reader::readPubComp(const str& data){
     }
 }
 secp256k1::private_key secp256k1::reader::readPriv(const str& data){
-    if(DEBUG)
-        std::cout << data << std::endl << "len = " << data.length() << std::endl;
+    if(DEBUG) std::cout << data << std::endl << "len = " << data.length() << std::endl;
     if(!data.empty()) {
         return private_key{
             BigInt::fromHex(data),
@@ -88,8 +126,7 @@ secp256k1::private_key secp256k1::reader::readPriv(const str& data){
     }
 }
 secp256k1::keypair secp256k1::reader::readKeyPair(const str& data){
-    if(DEBUG)
-        std::cout << data << std::endl << "len = " << data.length() << std::endl;
+    if(DEBUG) std::cout << data << std::endl << "len = " << data.length() << std::endl;
     if(data.length() == 192){
         return keypair{
                 readPub(data.substr(0,128)),
@@ -108,8 +145,7 @@ secp256k1::keypair secp256k1::reader::readKeyPair(const str& data){
     }
 }
 secp256k1::keypair_short secp256k1::reader::readKeyPairComp(const str& data){
-    if(DEBUG)
-        std::cout << data << std::endl << "len = " << data.length() << std::endl;
+    if(DEBUG) std::cout << data << std::endl << "len = " << data.length() << std::endl;
     if(data.length() == 128){
         return keypair_short{
             BigInt::fromHex(data.substr(0,64)),

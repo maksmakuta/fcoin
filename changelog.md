@@ -1,10 +1,14 @@
 ## FCoin changelog
 
+### v. 0.3.3 (beta)
+ - secp256k1 signing works
+ - add some testing for verify signing
+
 ### v. 0.3.2 (beta)
  - add SHA384 and SHA512 implementation
  - update sharand to return 256,384,512-bit integers
  - add parsing integers from base2 to base36 for BigInt
- - working secp256k1 algorithm
+ - working secp256k1 algorithm (almost last step)
  - rewrite tests
 
 ### v. 0.3.1 (beta)

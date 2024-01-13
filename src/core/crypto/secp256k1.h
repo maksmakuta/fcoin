@@ -31,7 +31,7 @@ public:
     secp256k1() = default;
 
     static str sign(private_key &p,const str& data);
-    static bool verify(public_key &p,const str& sign);
+    static bool verify(public_key &p,const str& data,const str& sign);
 
     class generator{
     public:

@@ -6,6 +6,12 @@ add_library(fcoin_core SHARED
         constants.h
         blockchain.cpp
         blockchain.h
+        crypto/sha/sha256.cpp
+        crypto/sha/sha256.h
+        crypto/sha/sha384.cpp
+        crypto/sha/sha384.h
+        crypto/sha/sha512.cpp
+        crypto/sha/sha512.h
         crypto/merkle_tree.cpp
         crypto/merkle_tree.h
         crypto/secp256k1.cpp
@@ -14,19 +20,11 @@ add_library(fcoin_core SHARED
         crypto/BigInt.h
         crypto/ripemd160.cpp
         crypto/ripemd160.h
+        crypto/sharand.h
         transaction.cpp
         transaction.h
         utils.cpp
         utils.h
-        crypto/sharand.h
-        crypto/sha/sha256.cpp
-        crypto/sha/sha256.h
-        crypto/sha/sha384.cpp
-        crypto/sha/sha384.h
-        crypto/sha/sha512.cpp
-        crypto/sha/sha512.h
-        exception/bad_size_exception.cpp
-        exception/bad_size_exception.h
 )
 
 include(GNUInstallDirs)
