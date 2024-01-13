@@ -114,3 +114,11 @@ TEST_CASE("secp256k1 serializing"){
 
     data.clear();
 }
+
+TEST_CASE("secp256k1 singing and verifying"){
+    str text = "Hello, World!";
+    auto kp = secp256k1::generator::gen();
+    auto sign = secp256k1::sign(kp.priv,text);
+    auto s = secp256k1::verify(kp.pub,text,sign);
+    CHECK_EQ(s,true);
+}
