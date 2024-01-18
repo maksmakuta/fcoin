@@ -1,5 +1,8 @@
 project(fcoin_core)
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 add_library(fcoin_core SHARED
         block.cpp
         block.h
@@ -25,7 +28,16 @@ add_library(fcoin_core SHARED
         transaction.h
         utils.cpp
         utils.h
+        db/sqlite_orm.h
+        exception/runtime_exception.cpp
+        exception/runtime_exception.h
 )
+
+find_package(SQLite3 REQUIRED)
+if(SQLITE3_FOUND)
+    target_include_directories(fcoin_core PRIVATE SQLite3_INCLUDE_DIRS)
+    target_link_libraries(fcoin_core PUBLIC ${SQLite3_LIBRARIES})
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

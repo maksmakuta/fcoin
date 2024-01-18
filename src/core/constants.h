@@ -6,8 +6,9 @@
 #include <vector>
 
 #define BLOCK_DB "chain.db"
-#define TZ_DB "chain.db"
-#define CHAIN_DB "chain.db"
+#define TZ_DB "transactions.db"
+#define INPUTS_DB "inputs.db"
+#define OUTPUTS_DB "outputs.db"
 
 typedef int8_t  i8;
 typedef int16_t i16;

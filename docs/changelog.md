@@ -1,5 +1,12 @@
 ## FCoin changelog
 
+### v. 0.3.4 (beta)
+ - move changelog.md to /docs
+ - db module merged with core
+ - new module : net
+ - update cmakelists to c++20
+ - simple socket client/server app in node/miner executables
+
 ### v. 0.3.3 (beta)
  - secp256k1 signing works
  - add some testing for verify signing
