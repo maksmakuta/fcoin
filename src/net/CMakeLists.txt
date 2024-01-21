@@ -6,6 +6,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_library(fcoin_net SHARED
+        constants.h
         fNet.cpp
         fNet.h
         Peer.cpp

@@ -31,6 +31,15 @@ add_library(fcoin_core SHARED
         db/sqlite_orm.h
         exception/runtime_exception.cpp
         exception/runtime_exception.h
+        db/blockchain_db.cpp
+        db/blockchain_db.h
+        db/transaction_db.cpp
+        db/transaction_db.h
+        db/transaction_input_db.cpp
+        db/transaction_input_db.h
+        db/transaction_output_db.cpp
+        db/transaction_output_db.h
+        db/db.h
 )
 
 find_package(SQLite3 REQUIRED)

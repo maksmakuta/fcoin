@@ -1,6 +1,6 @@
 # fcoin
 
-Microcryptocurrency with PoV consensus algorithm written in C++
+ Microcryptocurrency with PoV consensus algorithm written in C++
 
 ## Dependencies
 
@@ -10,10 +10,12 @@ Microcryptocurrency with PoV consensus algorithm written in C++
  - [zmqpp](https://github.com/zeromq/zmqpp)
  - doctest (only for tests)
  
-## Changelog
+## Docs
 
- See file [changelog.md](/docs/changelog.md)
+ Docs in active development.
+ See [docs](/docs/main.md).
 
 ## Author
 
  Maks Makuta
+ MIT Licence

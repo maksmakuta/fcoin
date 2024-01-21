@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.3.5 (beta)
+ - implement CRUD operations for DB (now in tests) 
+ - add main page for docs
+ - fix test cmake config
+
 ### v. 0.3.4 (beta)
  - move changelog.md to /docs
  - db module merged with core

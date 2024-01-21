@@ -1,6 +1,6 @@
 ## DB
  This project uses SQLite for storing data  
- Main objects to store is:
+ Main objects for blockchain to store is:
 
  - block
  - transaction
@@ -10,7 +10,7 @@
 ### Define classes
 
     block(
-        height INTEGER,
+        id INTEGER [PRIMARY KEY],
         hash TEXT,
         prev_hash TEXT,
         merkle_root TEXT,
@@ -19,6 +19,7 @@
     )
 
     transaction{
+        id INTEGER [PRIMARY KEY], 
         txid TEXT,
         block TEXT, // link to block by hash
         time TIMESTAMP,
@@ -27,12 +28,14 @@
     }
 
     transaction_input{
+        id INTEGER [PRIMARY KEY], 
         output TEXT // hash of output
         sign TEXT,
         txid TEXT
     }
 
     transaction_output{
+        id INTEGER [PRIMARY KEY], 
         hash TEXT,
         sender TEXT,
         receiver TEXT,
