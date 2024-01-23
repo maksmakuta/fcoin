@@ -9,6 +9,8 @@ public:
     void update(const str& input);
     void update(const vec<str>& input);
     str root();
+
+    static str fast(const vec<str>& input);
 private:
     static str hash(const str& input);
     vec<str> data;

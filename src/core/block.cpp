@@ -3,11 +3,16 @@
 #include "crypto/merkle_tree.h"
 #include "crypto/sha/sha256.h"
 
-block::block(str hash, str prev_hash, u64 time, vec<str> tzData) {
-    this->block_hash = std::move(hash);
-    this->block_prev_hash = std::move(prev_hash);
-    this->timestamp = time;
-    this->transactions = std::move(tzData);
+block::block(const str& hash, const str& prev_hash, u64 time, const vec<str>& tzData) {
+    this->setID(0);
+    this->setHash(hash);
+    this->setPrevHash(prev_hash);
+    this->setTime(time);
+    this->setTransactions(tzData);
+}
+
+u64 block::getID() const{
+    return this->ID;
 }
 
 str block::getHash() const{
@@ -30,9 +35,28 @@ bool block::verify() const{
     return new_hash(block_prev_hash,timestamp,transactions) == this->block_hash;
 }
 
+void block::setID(u64 input){
+    this->ID = input;
+}
+
+void block::setHash(const str& input){
+    this->block_hash = input;
+}
+
+void block::setPrevHash(const str& input){
+    this->block_prev_hash = input;
+}
+
+void block::setTime(u64 input){
+    this->timestamp = input;
+}
+
+void block::setTransactions(const vec<str>& input){
+    this->transactions = input;
+    this->tz_count = (i32)transactions.size();
+    this->tz_root = merkle_tree::fast(this->transactions);
+}
+
 str block::new_hash(const str& prev_hash,u64 time,const vec<str>& tzData){
-    merkle_tree mtree;
-    mtree.update(tzData);
-    str root = mtree.root();
-    return sha256::fast(prev_hash + std::to_string(time) + root);
+    return sha256::fast(prev_hash + std::to_string(time) + merkle_tree::fast(tzData));
 }

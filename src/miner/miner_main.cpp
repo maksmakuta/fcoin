@@ -4,28 +4,18 @@
 
 using namespace std;
 
-int main(int argc, char** argv){
-    const str endpoint = "tcp://localhost:4242";
+/**
+ * usage: ./miner --node localhost:8989
+ *
+ * Args:
+ *
+ * --node ADDR:PORT     set node to comunicate with
+ * --wallet {NAME}      specify wallet to receive coins from mining
+ *                      [default takes random wallet or find existing one
+ *                      randomly when user has few wallets]
+ */
 
-    // initialize the 0MQ context
-    zmqpp::context context;
-
-    // generate a push socket
-    zmqpp::socket_type type = zmqpp::socket_type::push;
-    zmqpp::socket socket (context, type);
-
-    // open the connection
-    cout << "Opening connection to " << endpoint << "..." << endl;
-    socket.connect(endpoint);
-
-    // send a message
-    cout << "Sending text and a number..." << endl;
-    zmqpp::message message;
-    // compose a message from a string and a number
-    message << "Hello World!" << 42;
-    socket.send(message);
-
-    cout << "Sent message." << endl;
-    cout << "Finished." << endl;
+int main(int argc, char **argv) {
+    std::cout << "Hello, Miner!\n";
     return 0;
 }

@@ -1,34 +1,22 @@
 #include <iostream>
-#include <zmqpp/zmqpp.hpp>
-#include "../core/constants.h"
 
 using namespace std;
 
+
+/**
+ * usage: ./node --peerlist peers.txt --peer localhost:9999
+ *
+ * Args:
+ * --peer ip    add peer to connect
+ * --peerlist   add peers written in file (every peer per line formatted in ip list)
+ *
+ * example peerlist:
+ * 127.0.0.1:1234
+ * 127.0.0.1:4567
+ * 127.0.0.1:7890
+ * 127.0.0.1:1470
+ */
 int main(int argc, char** argv){
-
-    const str endpoint = "tcp://localhost:4242";
-
-    // initialize the 0MQ context
-    zmqpp::context context;
-
-    // generate a pull socket
-    zmqpp::socket_type type = zmqpp::socket_type::pull;
-    zmqpp::socket socket (context, type);
-
-    // bind to the socket
-    cout << "Binding to " << endpoint << "..." << endl;
-    socket.bind(endpoint);
-
-    // receive the message
-    cout << "Receiving message..." << endl;
-    zmqpp::message message;
-    // decompose the message
-    socket.receive(message);
-    string text;
-    int number;
-    message >> text >> number;
-
-    cout << "Received text:\"" << text << "\" and a number: " << number << endl;
-    cout << "Finished." << endl;
+    std::cout << "Hello, Node!\n";
     return 0;
 }

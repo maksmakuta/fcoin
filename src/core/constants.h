@@ -10,6 +10,11 @@
 #define INPUTS_DB "inputs.db"
 #define OUTPUTS_DB "outputs.db"
 
+#define BLOCK_TABLE "blocks"
+#define TZ_TABLE "transactions"
+#define INPUTS_TABLE "inputs"
+#define OUTPUTS_TABLE "outputs"
+
 typedef int8_t  i8;
 typedef int16_t i16;
 typedef int32_t i32;

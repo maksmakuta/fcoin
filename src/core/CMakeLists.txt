@@ -28,25 +28,9 @@ add_library(fcoin_core SHARED
         transaction.h
         utils.cpp
         utils.h
-        db/sqlite_orm.h
         exception/runtime_exception.cpp
         exception/runtime_exception.h
-        db/blockchain_db.cpp
-        db/blockchain_db.h
-        db/transaction_db.cpp
-        db/transaction_db.h
-        db/transaction_input_db.cpp
-        db/transaction_input_db.h
-        db/transaction_output_db.cpp
-        db/transaction_output_db.h
-        db/db.h
 )
-
-find_package(SQLite3 REQUIRED)
-if(SQLITE3_FOUND)
-    target_include_directories(fcoin_core PRIVATE SQLite3_INCLUDE_DIRS)
-    target_link_libraries(fcoin_core PUBLIC ${SQLite3_LIBRARIES})
-endif()
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

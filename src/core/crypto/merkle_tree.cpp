@@ -33,3 +33,9 @@ str merkle_tree::root(){
 str merkle_tree::hash(const str& input){
     return sha256::fast(input);
 }
+
+static str fast(const vec<str>& input){
+    merkle_tree t;
+    t.update(input);
+    return t.root();
+}

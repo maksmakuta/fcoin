@@ -1,41 +1,46 @@
 ## DB
- This project uses SQLite for storing data  
- Main objects for blockchain to store is:
+ This project uses SQLite for storing data.  
+ SQLite provides C API for working with databases and its simple, fast and provide local access to database.
 
+ Main objects for blockchain to store is:
  - block
  - transaction
  - transaction_input
  - transaction_output
 
-### Define classes
+ Every db provide 2 operations with DB:
+ - push (insert object into DB)
+ - pop (read object from DB)
+
+ Update objects is necessary for blockchain applications
+
+### Define tables
 
     block(
-        id INTEGER [PRIMARY KEY],
         hash TEXT,
-        prev_hash TEXT,
-        merkle_root TEXT,
+        phash TEXT,
         time TIMESTAMP,
-        transactions INTEGER
+        tz_root TEXT,
+        tz_count INTEGER
     )
 
     transaction{
-        id INTEGER [PRIMARY KEY], 
         txid TEXT,
         block TEXT, // link to block by hash
         time TIMESTAMP,
         inputs INTEGER, // count of transaction_input
+        inputs_root TEXT,
         outputs INTEGER, // count of transaction_output
+        outputs_root TEXT,    
     }
 
     transaction_input{
-        id INTEGER [PRIMARY KEY], 
         output TEXT // hash of output
         sign TEXT,
         txid TEXT
     }
 
     transaction_output{
-        id INTEGER [PRIMARY KEY], 
         hash TEXT,
         sender TEXT,
         receiver TEXT,

@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.3.6 (beta)
+ - remove sqlite and sqlite_orm as unneeded dependencies
+ - some fixes and improvements
+ - write some usage and args in executable
+ - move core/db to module
+
 ### v. 0.3.5 (beta)
  - implement CRUD operations for DB (now in tests) 
  - add main page for docs
