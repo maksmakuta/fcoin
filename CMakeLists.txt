@@ -7,8 +7,11 @@ set(CMAKE_SOURCE_DIR src)
 
 set(FCOIN_TEST ON)
 
+#libraries
 add_subdirectory(src/core)
 add_subdirectory(src/net)
+
+#executables
 add_subdirectory(src/explorer)
 add_subdirectory(src/node)
 add_subdirectory(src/miner)

@@ -64,8 +64,11 @@ public:
     };
 
     class recovery{
-        static public_key pub(private_key&);
-        static public_key_short pubComp(private_key&);
+    public:
+        recovery() = default;
+
+        static public_key pub(const private_key&);
+        static public_key_short pubComp(const private_key&);
     };
 };
 

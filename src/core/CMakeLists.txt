@@ -3,12 +3,14 @@ project(fcoin_core)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package (SQLite3 REQUIRED sqlite)
+
 add_library(fcoin_core SHARED
         block.cpp
         block.h
-        constants.h
         blockchain.cpp
         blockchain.h
+        constants.h
         crypto/sha/sha256.cpp
         crypto/sha/sha256.h
         crypto/sha/sha384.cpp
@@ -24,13 +26,32 @@ add_library(fcoin_core SHARED
         crypto/ripemd160.cpp
         crypto/ripemd160.h
         crypto/sharand.h
+        db/db.h
+        db/blockchain_db.cpp
+        db/blockchain_db.h
+        db/transaction_input_db.cpp
+        db/transaction_input_db.h
+        db/transaction_output_db.cpp
+        db/transaction_output_db.h
+        db/transaction_db.cpp
+        db/transaction_db.h
+        exception/runtime_exception.cpp
+        exception/runtime_exception.h
         transaction.cpp
         transaction.h
         utils.cpp
         utils.h
-        exception/runtime_exception.cpp
-        exception/runtime_exception.h
+        wallet.cpp
+        wallet.h
+        db/utxo_db.cpp
+        db/utxo_db.h
 )
+
+find_package(SQLite3 REQUIRED)
+if(SQLITE3_FOUND)
+    target_include_directories(fcoin_core PRIVATE SQLite3_INCLUDE_DIRS)
+    target_link_libraries(fcoin_core PUBLIC ${SQLite3_LIBRARIES})
+endif()
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

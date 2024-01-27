@@ -8,11 +8,11 @@
  - transaction_input
  - transaction_output
 
- Every db provide 2 operations with DB:
+ Every object_db provide 2 operations with DB:
  - push (insert object into DB)
  - pop (read object from DB)
 
- Update objects is necessary for blockchain applications
+ Update and delete objects is necessary for blockchain applications
 
 ### Define tables
 
@@ -35,6 +35,7 @@
     }
 
     transaction_input{
+        hash TEXT,
         output TEXT // hash of output
         sign TEXT,
         txid TEXT

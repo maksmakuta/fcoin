@@ -7,16 +7,12 @@
 class blockchain {
 public:
     blockchain() = default;
-
     void add(const block &blk);
-
-    std::optional<block> getBlock(const str &blk) const;
-    block last() const;
-    bool verify() const;
-
+    [[nodiscard]] std::optional<block> getBlock(const str &blk) const;
+    [[nodiscard]] block last() const;
+    [[nodiscard]] bool verify() const;
 private:
     vec<block> data;
-
 };
 
 

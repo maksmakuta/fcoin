@@ -4,15 +4,10 @@
 #include "crypto/sha/sha256.h"
 
 block::block(const str& hash, const str& prev_hash, u64 time, const vec<str>& tzData) {
-    this->setID(0);
     this->setHash(hash);
     this->setPrevHash(prev_hash);
     this->setTime(time);
     this->setTransactions(tzData);
-}
-
-u64 block::getID() const{
-    return this->ID;
 }
 
 str block::getHash() const{
@@ -35,10 +30,6 @@ bool block::verify() const{
     return new_hash(block_prev_hash,timestamp,transactions) == this->block_hash;
 }
 
-void block::setID(u64 input){
-    this->ID = input;
-}
-
 void block::setHash(const str& input){
     this->block_hash = input;
 }
@@ -58,5 +49,5 @@ void block::setTransactions(const vec<str>& input){
 }
 
 str block::new_hash(const str& prev_hash,u64 time,const vec<str>& tzData){
-    return sha256::fast(prev_hash + std::to_string(time) + merkle_tree::fast(tzData));
+    return sha256::fast(prev_hash + std::to_string(time) + std::to_string(tzData.size()) + merkle_tree::fast(tzData));
 }

@@ -15,22 +15,22 @@ struct transaction_output{
     str hash;
     str sender;
     str receiver;
-    u32 amount;
+    u64 amount;
     str txid;
 };
 
 class transaction {
 private:
-    str txid;  // hashOf(block + input_root + output_root + input_size.toHex() + output_size.toHex())
+    str txid;
     str block;
     vec<str> inputs;
     vec<str> outputs;
-    u64 time;
+    u64 time = 0L;
 public:
-    i32 id;
     str input_root,output_root;
-    i32 input_size,output_size;
+    i32 input_size = 0,output_size = 0;
 
+    transaction();
     transaction(
             const str& parent,
             const vec<str>& iData,

@@ -1,5 +1,9 @@
 ## FCoin changelog
 
+### v. 0.3.7 (beta)
+ - revert v. 0.3.6
+ - core db implementation
+
 ### v. 0.3.6 (beta)
  - remove sqlite and sqlite_orm as unneeded dependencies
  - some fixes and improvements

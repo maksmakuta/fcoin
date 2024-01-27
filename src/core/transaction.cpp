@@ -2,6 +2,9 @@
 #include "crypto/merkle_tree.h"
 #include "utils.h"
 
+
+transaction::transaction() = default;
+
 transaction::transaction(
         const str& parent,
         const vec<str>& iData,
@@ -48,7 +51,7 @@ void transaction::setInputs(const vec<str>& input){
 
 void transaction::setOutputs(const vec<str>& output){
     this->outputs = output;
-    this->output_size = (i32)(this->inputs.size());
+    this->output_size = (i32)(this->outputs.size());
     this->output_root = merkle_tree::fast(output);
 }
 

@@ -1,10 +1,12 @@
 ## docs for fcoin
 
  Docs for fcoin are in active development.  
- You can see docs for 
+ You can see docs for: 
 
- - [DB](db.md)  
+ - [DB](db.md)
+ - [Network](net.md)
+ - [Transactions](transaction.md)
 
- Also you can see [changelog](changelog.md).
+ Also, you can see [changelog](changelog.md).
 
 

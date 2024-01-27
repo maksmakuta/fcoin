@@ -6,6 +6,7 @@
 #include "../src/core/crypto/ripemd160.h"
 #include "../src/core/crypto/BigInt.h"
 #include "../src/core/crypto/secp256k1.h"
+#include "../src/core/db/transaction_output_db.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -121,4 +122,67 @@ TEST_CASE("secp256k1 singing and verifying"){
     auto sign = secp256k1::sign(kp.priv,text);
     auto s = secp256k1::verify(kp.pub,text,sign);
     CHECK_EQ(s,true);
+}
+
+transaction_output randTO(){
+    srand(time(null));
+    transaction_output t;
+    t.hash      = sha256::fast(std::to_string(rand() % 16384));
+    t.sender    = sha384::fast(std::to_string(rand() % (16384*16)));
+    t.receiver  = sha384::fast(std::to_string(rand() % (16384*16)));
+    t.amount    = rand() % 16000000;
+    t.txid      = sha256::fast(t.sender + t.receiver);
+    return t;
+}
+
+TEST_CASE("db push and pop"){
+    auto db = transaction_output_db();
+    db.init();
+
+    transaction_output a = randTO();
+    transaction_output b = randTO();
+    transaction_output c = randTO();
+    transaction_output d = randTO();
+
+    db.put(a);
+
+    transaction_output ta = db.pull(a.hash);
+
+    CHECK_EQ(a.hash    ,ta.hash    );
+    CHECK_EQ(a.sender  ,ta.sender  );
+    CHECK_EQ(a.receiver,ta.receiver);
+    CHECK_EQ(a.amount  ,ta.amount  );
+    CHECK_EQ(a.txid    ,ta.txid    );
+
+    db.newTx();
+    db.put(b);
+    db.put(c);
+    db.put(d);
+    db.commit();
+
+    auto ba = db.pull(b.hash);
+    auto ca = db.pull(c.hash);
+    auto da = db.pull(d.hash);
+
+    CHECK_EQ(b.hash    ,ba.hash    );
+    CHECK_EQ(b.sender  ,ba.sender  );
+    CHECK_EQ(b.receiver,ba.receiver);
+    CHECK_EQ(b.amount  ,ba.amount  );
+    CHECK_EQ(b.txid    ,ba.txid    );
+
+    CHECK_EQ(c.hash    ,ca.hash    );
+    CHECK_EQ(c.sender  ,ca.sender  );
+    CHECK_EQ(c.receiver,ca.receiver);
+    CHECK_EQ(c.amount  ,ca.amount  );
+    CHECK_EQ(c.txid    ,ca.txid    );
+
+    CHECK_EQ(d.hash    ,da.hash    );
+    CHECK_EQ(d.sender  ,da.sender  );
+    CHECK_EQ(d.receiver,da.receiver);
+    CHECK_EQ(d.amount  ,da.amount  );
+    CHECK_EQ(d.txid    ,da.txid    );
+
+
+    db.clear();
+
 }

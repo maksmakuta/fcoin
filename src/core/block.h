@@ -7,7 +7,8 @@ class block {
 public:
     str tz_root;
     i32 tz_count = 0;
-    u64 ID = 0u;
+
+    block() = default;
 
     block(
         const str& hash,
@@ -16,13 +17,11 @@ public:
         const vec<str>& tzData
     );
 
-    [[nodiscard]] u64 getID() const;
     [[nodiscard]] str getHash() const;
     [[nodiscard]] str getPrevHash() const;
     [[nodiscard]] u64 getTime() const;
     [[nodiscard]] vec<str> getTransactions() const;
 
-    void setID(u64);
     void setHash(const str&);
     void setPrevHash(const str&);
     void setTime(u64);

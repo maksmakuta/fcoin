@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#define DATA_DIR "data"
 #define BLOCK_DB "chain.db"
 #define TZ_DB "transactions.db"
 #define INPUTS_DB "inputs.db"
@@ -35,7 +36,7 @@ using str = std::string;
 template<typename T>
 using vec = std::vector<T>;
 
-template<typename T,u32 S>
+template<typename T,u64 S>
 using arr = std::array<T,S>;
 
 namespace errors{

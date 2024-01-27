@@ -187,13 +187,13 @@ str secp256k1::writer::writeKeyPairComp(const keypair_short& kps){
     return ss.str();
 }
 
-secp256k1::public_key secp256k1::recovery::pub(private_key& p ){
+secp256k1::public_key secp256k1::recovery::pub(const private_key& p ){
     return public_key{
         nums.x * p.secret,
         nums.y * p.secret
     };
 }
-secp256k1::public_key_short secp256k1::recovery::pubComp(private_key& p){
+secp256k1::public_key_short secp256k1::recovery::pubComp(const private_key& p){
     return public_key_short{
         nums.x * p.secret
     };
