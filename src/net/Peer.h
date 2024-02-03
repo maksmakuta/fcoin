@@ -2,13 +2,20 @@
 #define FCOIN_PEER_H
 
 #include <zmqpp/socket.hpp>
-#include "constants.h"
+#include "../core/constants.h"
 
 enum class PeerType{
     NODE,
     MINER,
     WALLET,
     EXPLORER
+};
+
+enum class BasePorts : i32{
+    NODE = 8888,
+    MINER = 8900,
+    WALLET = 8901,
+    EXPLORER = 8902
 };
 
 class Peer {

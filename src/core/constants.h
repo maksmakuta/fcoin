@@ -6,15 +6,18 @@
 #include <vector>
 
 #define DATA_DIR "data"
+
 #define BLOCK_DB "chain.db"
 #define TZ_DB "transactions.db"
 #define INPUTS_DB "inputs.db"
 #define OUTPUTS_DB "outputs.db"
+#define UTXO_DB "utxo.db"
 
 #define BLOCK_TABLE "blocks"
 #define TZ_TABLE "transactions"
 #define INPUTS_TABLE "inputs"
 #define OUTPUTS_TABLE "outputs"
+#define UTXO_TABLE "utxo"
 
 typedef int8_t  i8;
 typedef int16_t i16;
@@ -28,6 +31,8 @@ typedef u_int64_t u64;
 
 typedef float   f32;
 typedef double  f64;
+
+typedef u8 byte;
 
 #define null NULL
 

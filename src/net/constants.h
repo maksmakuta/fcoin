@@ -1,1 +1,0 @@
-/home/maks/Projects/fcoin/fcoin/src/core/constants.h

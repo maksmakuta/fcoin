@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.3.8 (beta)
+ - fix sqlite callback function in db.h
+ - utxo db implementation
+ - add argparce library
+
 ### v. 0.3.7 (beta)
  - revert v. 0.3.6
  - core db implementation

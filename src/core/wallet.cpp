@@ -17,6 +17,11 @@ str wallet::address() const{
     return sha384::fast(a + b);
 }
 
+u64 wallet::balance() const{
+    return 0;
+    //return utxo_db.sumOf();
+}
+
 transaction wallet::send(const str& address,u64 amount){
     //TODO (transaction creating)
 }

@@ -1,13 +1,13 @@
 ## transaction
 
- Every transactions consist of:
- - inputs
- - outputs
- - txid
- - time 
- - block hash
+Every transactions consist of:
+- inputs
+- outputs
+- txid
+- time
+- block hash
 
- TXID is a hash of all transaction that builds:
+TXID is a hash of all transaction that builds:
 
 ```c++
     auto inputs = to_string(inputs.size());
@@ -17,28 +17,28 @@
     return sha256::fast(inputs + input_root + time + output_root + outputs)
 ```
 
- Every wallet have UTXO (unspend transactions outputs) list that used for creating new transactions.  
- For example you have 5 UTXO:
-  - 0.3
-  - 0.1
-  - 0.15
-  - 0.9
-  - 1.5
+Every wallet have UTXO (unspend transactions outputs) list that used for creating new transactions.  
+For example you have 5 UTXO:
+- 0.3
+- 0.1
+- 0.15
+- 0.9
+- 1.5
 
- And you want to send 0.2 coins to someone, but there is no UTXO that have 0.2 coins. So we sort UTXO's in increasing order and take first n UTXO's that bigger than 0.2
- - 0.1 (take this)
- - 0.15 (and this)
- - 0.3
- - 0.9
- - 1.5
+And you want to send 0.2 coins to someone, but there is no UTXO that have 0.2 coins. So we sort UTXO's in increasing order and take first n UTXO's that bigger than 0.2
+- 0.1 (take this)
+- 0.15 (and this)
+- 0.3
+- 0.9
+- 1.5
 
 Now we create transaction with 2 inputs and 2 outputs  
 inputs (total 0.25):
- - 0.1
- - 0.15
-outputs (total 0.25);
- - 0.2  (sends to someone else)
- - 0.05 (your change)
+- 0.1
+- 0.15  
+  outputs (total 0.25);
+- 0.2  (sends to someone else)
+- 0.05 (your change)
 
 That's all.
 

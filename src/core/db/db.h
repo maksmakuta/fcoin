@@ -8,17 +8,6 @@
 #include <filesystem>
 #include "../constants.h"
 
-namespace db_internal {
-    std::function<void(int, char **, char **)> fn;
-
-    int db_callback(void *, int s, char **rows, char **cols) {
-        if (fn) {
-            fn(s, rows, cols);
-        }
-        return SQLITE_OK;
-    }
-}
-
 template<class T>
 class db{
 public:
@@ -47,13 +36,21 @@ public:
         txStream.clear();
     }
 
-    void exec(const str& sql,const std::function<void(int, char **, char **)> &callback){
-    //    std::cout << "SQL = " << sql << "\n";
-        db_internal::fn = callback;
-        int op = sqlite3_exec(db_handle,sql.c_str(), db_internal::db_callback , nullptr, null);
+    void exec(const str& sql,const std::function<void(int, char **, char **)> &f){
+        this->fn = f;
+        int op = sqlite3_exec(
+                db_handle,
+                sql.c_str(),
+                [](void* data,int argc, char **argv, char **argvCol){
+                    static_cast<db*>(data)->fn(argc,argv,argvCol);
+                    return 0;
+                },
+                this,
+                null);
         if(op != 0){
             std::cerr << "Error (" << op << "): " << sqlite3_errmsg(db_handle) << '\n';
         }
+        this->fn = null;
     }
 
     bool isTableExist(const str& table){
@@ -73,6 +70,7 @@ private:
     sqlite3 *db_handle = nullptr;
     bool tx_mode = false;
     std::stringstream txStream;
+    std::function<void(int, char **, char **)> fn = null;
 };
 
 #endif //FCOIN_DB_H

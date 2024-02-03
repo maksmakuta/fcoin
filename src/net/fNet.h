@@ -1,15 +1,8 @@
 #ifndef FCOIN_FNET_H
 #define FCOIN_FNET_H
 
-#include "constants.h"
+#include "../core/constants.h"
 #include "Peer.h"
-
-enum class BasePorts : i32{
-    NODE = 8888,
-    MINER = 8900,
-    WALLET = 8901,
-    EXPLORER = 8902
-};
 
 class fNet {
 public:

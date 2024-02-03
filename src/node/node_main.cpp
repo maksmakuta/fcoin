@@ -2,7 +2,6 @@
 
 using namespace std;
 
-
 /**
  * usage: ./node --peerlist peers.txt --peer localhost:9999
  *

@@ -5,8 +5,9 @@
 ## Dependencies
 
  - C++20
+ - [argparse](https://github.com/p-ranav/argparse)
  - CMake 3.20+ (for build)
- - SQLite 3.0
+ - SQLite 3.0+
  - [zmqpp](https://github.com/zeromq/zmqpp)
  - doctest (only for tests)
  

@@ -47,6 +47,14 @@ add_library(fcoin_core SHARED
         db/utxo_db.h
 )
 
+include(FetchContent)
+FetchContent_Declare(
+        argparse
+        GIT_REPOSITORY https://github.com/p-ranav/argparse.git
+)
+FetchContent_MakeAvailable(argparse)
+target_link_libraries(fcoin_core PUBLIC argparse)
+
 find_package(SQLite3 REQUIRED)
 if(SQLITE3_FOUND)
     target_include_directories(fcoin_core PRIVATE SQLite3_INCLUDE_DIRS)

@@ -52,22 +52,22 @@ block blockchain_db::pull(const str &hash){
     vec<str> txid = tzdb.txByBlock(hash);
     obj.setTransactions(txid);
 
-    exec(sql.str(), [&obj,&err](int s, char** rows, char **cols){
-        if(s == 5){
+    exec(sql.str(), [&obj, &err](int s, char **rows,char **cols){
+        if (s == 5) {
             obj.setHash(rows[0]);
             obj.setPrevHash(rows[1]);
             obj.setTime(std::stoi(rows[2]));
             str root = rows[3];
             i32 count = std::stoi(rows[4]);
-            if(obj.tz_count != count){
+            if (obj.tz_count != count) {
                 std::cerr << "wrong tz count\n";
                 err = true;
             }
-            if(obj.tz_root != root){
+            if (obj.tz_root != root) {
                 std::cerr << "wrong tz root\n";
                 err = true;
             }
-        }else{
+        } else {
             std::cerr << "Wrong amount of data\n";
         }
     });

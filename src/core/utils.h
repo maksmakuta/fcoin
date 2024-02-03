@@ -18,4 +18,6 @@ vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
 
 u64 timestamp();
 
+vec<byte> toBytes(const str& hex);
+
 #endif //FCOIN_UTILS_H

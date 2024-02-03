@@ -7,6 +7,7 @@
 #include "../src/core/crypto/BigInt.h"
 #include "../src/core/crypto/secp256k1.h"
 #include "../src/core/db/transaction_output_db.h"
+#include "../src/core/wallet.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -182,7 +183,17 @@ TEST_CASE("db push and pop"){
     CHECK_EQ(d.amount  ,da.amount  );
     CHECK_EQ(d.txid    ,da.txid    );
 
-
     db.clear();
+}
+
+TEST_CASE("wallet things"){
+    auto walletA = wallet::generate();
+    auto walletB = wallet::generate();
+
+    std::cout << "WalletA address = " << walletA.address() << "\n";
+    std::cout << "WalletB address = " << walletB.address() << "\n";
+
+    auto tz = walletA.send(walletB.address(),1);
 
 }
+

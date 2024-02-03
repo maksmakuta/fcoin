@@ -1,0 +1,6 @@
+#ifndef FCOIN_COMMANDS_H
+#define FCOIN_COMMANDS_H
+
+
+
+#endif //FCOIN_COMMANDS_H

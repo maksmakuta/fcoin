@@ -10,10 +10,10 @@ public:
     explicit wallet(const secp256k1::private_key& privateKey);
     explicit wallet(const secp256k1::keypair& keys);
 
-    str address() const;
+    [[nodiscard]] str address() const;
+    [[nodiscard]] u64 balance() const;
 
     transaction send(const str& address,u64 amount);
-
 
     static wallet generate();
 
