@@ -44,4 +44,12 @@
    - transactions
    - wallets
    - miner info
- 
+
+### Packets
+
+ All packets consist of:  
+ - command code (1 byte)
+ - raw data (any length)
+
+ Response also contains command code to verify responses, because all data transferred in binary format.
+ Check [commands.h](../src/net/commands.h) for more details

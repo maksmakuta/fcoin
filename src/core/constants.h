@@ -19,6 +19,11 @@
 #define OUTPUTS_TABLE "outputs"
 #define UTXO_TABLE "utxo"
 
+#define NODE_PORT       8888
+#define MINER_PORT      8900
+#define WALLET_PORT     8901
+#define EXPLORER_PORT   8902
+
 typedef int8_t  i8;
 typedef int16_t i16;
 typedef int32_t i32;

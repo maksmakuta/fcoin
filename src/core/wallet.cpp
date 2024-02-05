@@ -1,6 +1,7 @@
 #include "wallet.h"
 #include "crypto/ripemd160.h"
 #include "crypto/sha/sha384.h"
+#include "utils.h"
 
 wallet::wallet(const secp256k1::private_key& privateKey){
     auto pub = secp256k1::recovery::pub(privateKey);
@@ -14,7 +15,7 @@ str wallet::address() const{
     auto y = kp.pub.y;
     auto a = ripemd160::fast(y.to_string());
     auto b = sha256::fast(a);
-    return sha384::fast(a + b);
+    return "fc" + sha384::fast(a + b);
 }
 
 u64 wallet::balance() const{
@@ -23,7 +24,10 @@ u64 wallet::balance() const{
 }
 
 transaction wallet::send(const str& address,u64 amount){
-    //TODO (transaction creating)
+    auto tz = transaction();
+    tz.setTime(timestamp());
+    tz.setTXID("null");
+    return tz;
 }
 
 wallet wallet::generate(){

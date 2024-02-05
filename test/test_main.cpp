@@ -8,6 +8,7 @@
 #include "../src/core/crypto/secp256k1.h"
 #include "../src/core/db/transaction_output_db.h"
 #include "../src/core/wallet.h"
+#include "../src/core/coins.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -197,3 +198,16 @@ TEST_CASE("wallet things"){
 
 }
 
+TEST_CASE("parse coins"){
+    auto a = Coins(12.2650F);
+    CHECK_EQ(a.enc(),122650);
+
+    a = Coins(700UL);
+    CHECK_EQ(a.enc(),700);
+
+    a = Coins::MIN();
+    CHECK_EQ(a.enc(),1);
+
+    a = Coins::MAX();
+    CHECK_EQ(a.enc(),10000000000000000000UL);
+}

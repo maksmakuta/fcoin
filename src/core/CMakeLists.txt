@@ -45,6 +45,10 @@ add_library(fcoin_core SHARED
         wallet.h
         db/utxo_db.cpp
         db/utxo_db.h
+        coins.h
+        coins.cpp
+        logger.h
+        logger.cpp
 )
 
 include(FetchContent)

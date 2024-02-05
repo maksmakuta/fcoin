@@ -32,11 +32,11 @@ And you want to send 0.2 coins to someone, but there is no UTXO that have 0.2 co
 - 0.9
 - 1.5
 
-Now we create transaction with 2 inputs and 2 outputs  
-inputs (total 0.25):
+Now we create transaction with 2 inputs and 2 outputs   
+inputs (total 0.25):  
 - 0.1
 - 0.15  
-  outputs (total 0.25);
+  outputs (total 0.25);  
 - 0.2  (sends to someone else)
 - 0.05 (your change)
 

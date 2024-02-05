@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.4.0 (beta)
+ - define control commands
+ - simple peer class to communicate over tcp
+ - implemented simple server and client 
+ - simple logger available
+
 ### v. 0.3.8 (beta)
  - fix sqlite callback function in db.h
  - utxo db implementation

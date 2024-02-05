@@ -6,11 +6,10 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
 add_library(fcoin_net SHARED
-        fNet.cpp
-        fNet.h
-        Peer.cpp
-        Peer.h
         commands.h
+        peer.h
+        pool.h
+        pool.cpp
 )
 
 target_link_libraries(fcoin_net PUBLIC zmq zmqpp sodium)
