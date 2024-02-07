@@ -15,6 +15,7 @@
 #define SYNC_TX         0x12
 #define SYNC_TXI        0x13
 #define SYNC_TXO        0x14
+#define SYNC_CHAIN      0x15
 #define SYNC_PEER       0x1f
 
 #define DATA_MEMPOOL    0x20

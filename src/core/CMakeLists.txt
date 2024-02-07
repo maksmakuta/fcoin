@@ -49,15 +49,9 @@ add_library(fcoin_core SHARED
         coins.cpp
         logger.h
         logger.cpp
+        app.h
+        app.cpp
 )
-
-include(FetchContent)
-FetchContent_Declare(
-        argparse
-        GIT_REPOSITORY https://github.com/p-ranav/argparse.git
-)
-FetchContent_MakeAvailable(argparse)
-target_link_libraries(fcoin_core PUBLIC argparse)
 
 find_package(SQLite3 REQUIRED)
 if(SQLITE3_FOUND)

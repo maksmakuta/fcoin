@@ -1,5 +1,12 @@
 ## FCoin changelog
 
+### v. 0.4.1 (beta)
+ - remove argparser to own implementation with any amount of parameters
+ - rewrite blockchain to work with db's
+ - update logger to use stringstream (alias strss)
+ - fix bug with sql create command (transaction_db.cpp)
+ - add folder for storing databases 
+
 ### v. 0.4.0 (beta)
  - define control commands
  - simple peer class to communicate over tcp

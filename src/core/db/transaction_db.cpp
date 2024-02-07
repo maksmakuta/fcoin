@@ -9,9 +9,9 @@ void transaction_db::init() {
         ss << " TXID VARCHAR(32),";
         ss << " BLOCK VARCHAR(32),";
         ss << " TIME INTEGER,";
-        ss << " INPUTS INTEGER";
-        ss << " INPUTS_ROOT VARCHAR(32)";
-        ss << " OUTPUTS INTEGER";
+        ss << " INPUTS INTEGER,";
+        ss << " INPUTS_ROOT VARCHAR(32),";
+        ss << " OUTPUTS INTEGER,";
         ss << " OUTPUTS_ROOT VARCHAR(32)";
         ss << ");";
 

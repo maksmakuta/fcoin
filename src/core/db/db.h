@@ -13,7 +13,11 @@ class db{
 public:
 
     explicit db(const str& db_name){
-        sqlite3_open(db_name.c_str(),&db_handle);
+        strss ss;
+        ss << "./" << DATA_DIR;
+        check_dir(ss.str());
+        ss << "/" << db_name;
+        sqlite3_open(ss.str().c_str(),&db_handle);
     }
     ~db(){
         sqlite3_close(db_handle);
@@ -71,6 +75,13 @@ private:
     bool tx_mode = false;
     std::stringstream txStream;
     std::function<void(int, char **, char **)> fn = null;
+
+    void check_dir(const str& dir){
+        namespace fs = std::filesystem;
+        if (!fs::is_directory(dir) || !fs::exists(dir)) {
+            fs::create_directory(dir);
+        }
+    }
 };
 
 #endif //FCOIN_DB_H

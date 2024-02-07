@@ -3,6 +3,7 @@
 
 #include <array>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #define DATA_DIR "data"
@@ -19,10 +20,12 @@
 #define OUTPUTS_TABLE "outputs"
 #define UTXO_TABLE "utxo"
 
-#define NODE_PORT       8888
-#define MINER_PORT      8900
-#define WALLET_PORT     8901
-#define EXPLORER_PORT   8902
+#define NODE_PORT       "8888"
+#define MINER_PORT      "8900"
+#define WALLET_PORT     "8901"
+#define EXPLORER_PORT   "8902"
+
+#define TCP "tcp://"
 
 typedef int8_t  i8;
 typedef int16_t i16;
@@ -42,6 +45,7 @@ typedef u8 byte;
 #define null NULL
 
 using str = std::string;
+using strss = std::stringstream;
 
 template<typename T>
 using vec = std::vector<T>;

@@ -3,7 +3,6 @@
 #include <zmqpp/socket.hpp>
 #include <zmqpp/socket_types.hpp>
 #include <zmqpp/message.hpp>
-#include "argparse/argparse.hpp"
 #include "../core/constants.h"
 #include "../net/peer.h"
 
@@ -25,14 +24,16 @@
  */
 int main(int argc, char** argv){
     peer<MINER> p;
-    p.connect("tcp://localhost:" + std::to_string(NODE_PORT));
+    p.connect("tcp://localhost:" NODE_PORT);
     std::cout << "send to " << p.endpoint() << std::endl;
-    while (true) {
-        p.send("PING");
+    u8 cmd = 0x00;
+    while (cmd < 0xFF) {
+        p.send(vec<u8>{cmd});
         str data = p.receive();
         if(data.empty())
             break;
         std::cout << "Received " << data << std::endl;
+        cmd += 0x01;
     }
     p.disconnect();
 

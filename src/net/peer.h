@@ -3,6 +3,7 @@
 
 #include <zmqpp/context.hpp>
 #include <zmqpp/socket.hpp>
+#include <zmqpp/message.hpp>
 #include "../core/constants.h"
 
 enum NodeType{
@@ -37,7 +38,13 @@ public:
     }
 
     void send(const str& data){
-        socket.send(data);
+        zmqpp::message msg;
+        msg << data;
+        socket.send(msg);
+    }
+
+    void send(const vec<u8>& data){
+        socket.send(str(data.begin(), data.end()));
     }
 
     str receive(){

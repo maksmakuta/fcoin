@@ -8,11 +8,10 @@ find_package(Threads REQUIRED)
 add_library(fcoin_net SHARED
         commands.h
         peer.h
-        pool.h
-        pool.cpp
 )
 
 target_link_libraries(fcoin_net PUBLIC zmq zmqpp sodium)
+set_target_properties(fcoin_net PROPERTIES LINKER_LANGUAGE CXX)
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_net
