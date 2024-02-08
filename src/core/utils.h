@@ -3,10 +3,6 @@
 
 #include "constants.h"
 
-bool startsWith(const str& input, const str& prefix);
-
-void f(auto anAuto);
-
 template<class I, class O>
 vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
     auto temp = vec<O>(inputs.size());
@@ -17,7 +13,5 @@ vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
 }
 
 u64 timestamp();
-
-vec<byte> toBytes(const str& hex);
 
 #endif //FCOIN_UTILS_H

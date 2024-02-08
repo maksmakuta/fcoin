@@ -1,8 +1,8 @@
 #ifndef FCOIN_TRANSACTION_H
 #define FCOIN_TRANSACTION_H
 
-#include "constants.h"
-#include "crypto/sha/sha256.h"
+#include "../constants.h"
+#include "../crypto/sha/sha256.h"
 
 struct transaction_input{
     str hash;

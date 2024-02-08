@@ -1,8 +1,5 @@
 #include <iostream>
 #include <zmqpp/context.hpp>
-#include <zmqpp/socket.hpp>
-#include <zmqpp/socket_types.hpp>
-#include <zmqpp/message.hpp>
 #include "../core/constants.h"
 #include "../net/peer.h"
 

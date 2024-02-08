@@ -2,7 +2,7 @@
 #define FCOIN_BLOCKCHAIN_DB_H
 
 #include "db.h"
-#include "../block.h"
+#include "../components/block.h"
 
 class blockchain_db : public db<block>{
 public:

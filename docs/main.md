@@ -7,7 +7,7 @@
  - [DB](db.md)
  - [Network](net.md)
  - [Transactions](transaction.md)
- - [PoV.md](PoV.md)
+ - [PoV](PoV.md)
  - [Wallet](wallet.md)
 
  Also, you can see [changelog](changelog.md).

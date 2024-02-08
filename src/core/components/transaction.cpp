@@ -1,6 +1,6 @@
 #include "transaction.h"
-#include "crypto/merkle_tree.h"
-#include "utils.h"
+#include "../crypto/merkle_tree.h"
+#include "../utils.h"
 
 
 transaction::transaction() = default;

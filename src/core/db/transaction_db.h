@@ -1,7 +1,7 @@
 #ifndef FCOIN_TRANSACTION_DB_H
 #define FCOIN_TRANSACTION_DB_H
 
-#include "../transaction.h"
+#include "../components/transaction.h"
 #include "db.h"
 
 class transaction_db : public db<transaction>{

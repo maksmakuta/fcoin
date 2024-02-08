@@ -2,7 +2,7 @@
 #define FCOIN_WALLET_H
 
 #include "./crypto/secp256k1.h"
-#include "transaction.h"
+#include "components/transaction.h"
 #include "db/utxo_db.h"
 
 class wallet {

@@ -1,7 +1,7 @@
 #ifndef FCOIN_COINS_H
 #define FCOIN_COINS_H
 
-#include "constants.h"
+#include "../constants.h"
 
 class Coins{
 public:

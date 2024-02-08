@@ -2,7 +2,7 @@
 #define FCOIN_UTXO_DB_H
 
 #include "db.h"
-#include "../transaction.h"
+#include "../components/transaction.h"
 
 class utxo_db : public db<transaction_output>{
 public:

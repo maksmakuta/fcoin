@@ -8,7 +8,9 @@
 #include "../src/core/crypto/secp256k1.h"
 #include "../src/core/db/transaction_output_db.h"
 #include "../src/core/wallet.h"
-#include "../src/core/coins.h"
+#include "../src/core/components/coins.h"
+#include "../src/core/hex.h"
+#include "../src/core/bytebuff.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -195,7 +197,7 @@ TEST_CASE("wallet things"){
     std::cout << "WalletB address = " << walletB.address() << "\n";
 
     auto tz = walletA.send(walletB.address(),1);
-
+    //TODO test
 }
 
 TEST_CASE("parse coins"){
@@ -210,4 +212,25 @@ TEST_CASE("parse coins"){
 
     a = Coins::MAX();
     CHECK_EQ(a.enc(),10000000000000000000UL);
+}
+
+TEST_CASE("hex serialization"){
+    u8 a = 0x99;
+    str hexA = hex::encode(a);
+    u8 b = hex::decode(hexA);
+    CHECK_EQ(a,b);
+
+    vec<u8> vecA = {0x01,0x02,0x04,0x08,0x10,0xFF};
+    str vA = hex::encode(vecA);
+    CHECK_EQ(vecA.size() * 2,vA.length());
+    vec<u8> res = hex::decodeVec(vA);
+    CHECK_EQ(vecA.size(),res.size());
+    for(u32 i = 0;i < res.size();i++) {
+        CHECK_EQ(vecA[i], res[i]);
+    }
+}
+
+TEST_CASE("bytebuff tests"){
+    bytebuff buff;
+
 }

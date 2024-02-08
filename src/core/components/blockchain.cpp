@@ -1,6 +1,6 @@
 #include <iostream>
 #include "blockchain.h"
-#include "logger.h"
+#include "../logger.h"
 
 blockchain::blockchain() {
     bdb.init();

@@ -5,6 +5,7 @@
 #include <zmqpp/socket.hpp>
 #include <zmqpp/message.hpp>
 #include "../core/constants.h"
+#include "../core/hex.h"
 
 enum NodeType{
     FULL,
@@ -51,6 +52,11 @@ public:
         str msg;
         socket.receive(msg);
         return msg;
+    }
+
+    vec<u8> receiveBytes(){
+        str bytes = receive();
+        return hex::decodeVec(bytes);
     }
 
     str endpoint(){

@@ -1,7 +1,7 @@
 #ifndef FCOIN_TRANSACTION_OUTPUT_DB_H
 #define FCOIN_TRANSACTION_OUTPUT_DB_H
 
-#include "../transaction.h"
+#include "../components/transaction.h"
 #include "db.h"
 
 class transaction_output_db : public db<transaction_output>{

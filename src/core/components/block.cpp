@@ -1,7 +1,7 @@
 #include <utility>
 #include "block.h"
-#include "crypto/merkle_tree.h"
-#include "crypto/sha/sha256.h"
+#include "../crypto/merkle_tree.h"
+#include "../crypto/sha/sha256.h"
 
 block::block(const str& hash, const str& prev_hash, u64 time, const vec<str>& tzData) {
     this->setHash(hash);

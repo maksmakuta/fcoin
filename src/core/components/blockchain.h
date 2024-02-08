@@ -3,10 +3,10 @@
 
 #include <optional>
 #include "block.h"
-#include "db/blockchain_db.h"
-#include "db/transaction_db.h"
-#include "db/transaction_input_db.h"
-#include "db/transaction_output_db.h"
+#include "../db/blockchain_db.h"
+#include "../db/transaction_db.h"
+#include "../db/transaction_input_db.h"
+#include "../db/transaction_output_db.h"
 
 struct blockchain_data{
     str lastHash;

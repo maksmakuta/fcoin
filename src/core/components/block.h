@@ -1,7 +1,7 @@
 #ifndef FCOIN_BLOCK_H
 #define FCOIN_BLOCK_H
 
-#include "constants.h"
+#include "../constants.h"
 
 class block {
 public:

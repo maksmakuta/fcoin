@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.4.2 (beta)
+ - remove unused functions from utils.h/cpp
+ - add hex converter (hex.h/cpp)
+ - add serialization support for base classes (block,transaction,transaction input, transaction output)
+ - bytebuff - buffer for de/serialization classes (init)
+
 ### v. 0.4.1 (beta)
  - remove argparser to own implementation with any amount of parameters
  - rewrite blockchain to work with db's

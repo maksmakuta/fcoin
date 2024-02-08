@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package (SQLite3 REQUIRED sqlite)
 
 add_library(fcoin_core SHARED
-        block.cpp
-        block.h
-        blockchain.cpp
-        blockchain.h
+        components/block.cpp
+        components/block.h
+        components/blockchain.cpp
+        components/blockchain.h
         constants.h
         crypto/sha/sha256.cpp
         crypto/sha/sha256.h
@@ -37,20 +37,27 @@ add_library(fcoin_core SHARED
         db/transaction_db.h
         exception/runtime_exception.cpp
         exception/runtime_exception.h
-        transaction.cpp
-        transaction.h
+        components/transaction.cpp
+        components/transaction.h
         utils.cpp
         utils.h
         wallet.cpp
         wallet.h
         db/utxo_db.cpp
         db/utxo_db.h
-        coins.h
-        coins.cpp
+        components/coins.h
+        components/coins.cpp
         logger.h
         logger.cpp
         app.h
         app.cpp
+        errors.h
+        errors.cpp
+        hex.cpp
+        hex.h
+        bytebuff.cpp
+        bytebuff.h
+        interface/serializeable.h
 )
 
 find_package(SQLite3 REQUIRED)

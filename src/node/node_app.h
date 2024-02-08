@@ -3,24 +3,25 @@
 
 #include "../core/app.h"
 #include "../net/peer.h"
-#include "../core/blockchain.h"
+#include "../core/components/blockchain.h"
 
 class NodeApp : public app{
-private:
-    blockchain bc;
-    peer<FULL> sock;
-    bool isWork = true;
-
 public:
     explicit NodeApp(int,char**);
     ~NodeApp();
 
     void initSocket();
     void freeSocket();
-    void run();
+
+    [[noreturn]] void run();
 
 private:
     str work(u8 cmd);
+
+    blockchain bc;
+    peer<FULL> sock;
+    bool isWork = true;
+    vec<u8> data;
 };
 
 #endif //FCOIN_NODE_APP_H

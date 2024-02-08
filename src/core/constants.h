@@ -53,8 +53,4 @@ using vec = std::vector<T>;
 template<typename T,u64 S>
 using arr = std::array<T,S>;
 
-namespace errors{
-    const str block_bad = "Block is NOT verified";
-}
-
 #endif //FCOIN_CONSTANTS_H

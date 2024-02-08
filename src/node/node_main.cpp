@@ -18,31 +18,5 @@ int main(int argc, char** argv){
 //    app.initSocket();
 //    app.run();
 //    app.freeSocket();
-
-/*
-    peer p;
-    p.bind("tcp://*:" NODE_PORT);
-    std::cout << "receive on " << p.endpoint() << std::endl;
-    while (true) {
-        str data = p.receive();
-        u8 cmd = (u8)data[0];
-//        std::this_thread::sleep_for(std::chrono::seconds(1));
-        if(data == "end")
-            break;
-        //std::cout << "Received " << data << std::endl;
-        p.send(decodeCmd(cmd));
-    }
-    p.unbind();
-
-
-    vec<str> peers = parse_args(argc,argv);
-    if(!peers.empty()){
-
-    }else{
-        Log::i("No peers found, work in local mode");
-    }
-    pool p;
-    p.bind();
-*/
     return 0;
 }
