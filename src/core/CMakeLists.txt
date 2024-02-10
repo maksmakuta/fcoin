@@ -3,7 +3,7 @@ project(fcoin_core)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package (SQLite3 REQUIRED sqlite)
+find_package (leveldb REQUIRED)
 
 add_library(fcoin_core SHARED
         components/block.cpp
@@ -17,7 +17,6 @@ add_library(fcoin_core SHARED
         crypto/sha/sha384.h
         crypto/sha/sha512.cpp
         crypto/sha/sha512.h
-        crypto/merkle_tree.cpp
         crypto/merkle_tree.h
         crypto/secp256k1.cpp
         crypto/secp256k1.h
@@ -26,15 +25,6 @@ add_library(fcoin_core SHARED
         crypto/ripemd160.cpp
         crypto/ripemd160.h
         crypto/sharand.h
-        db/db.h
-        db/blockchain_db.cpp
-        db/blockchain_db.h
-        db/transaction_input_db.cpp
-        db/transaction_input_db.h
-        db/transaction_output_db.cpp
-        db/transaction_output_db.h
-        db/transaction_db.cpp
-        db/transaction_db.h
         exception/runtime_exception.cpp
         exception/runtime_exception.h
         components/transaction.cpp
@@ -43,8 +33,6 @@ add_library(fcoin_core SHARED
         utils.h
         wallet.cpp
         wallet.h
-        db/utxo_db.cpp
-        db/utxo_db.h
         components/coins.h
         components/coins.cpp
         logger.h
@@ -53,17 +41,16 @@ add_library(fcoin_core SHARED
         app.cpp
         errors.h
         errors.cpp
-        hex.cpp
-        hex.h
         bytebuff.cpp
         bytebuff.h
-        interface/serializeable.h
+        interface/serializable.h
+        crypto/merkle_tree.cpp
 )
 
-find_package(SQLite3 REQUIRED)
-if(SQLITE3_FOUND)
-    target_include_directories(fcoin_core PRIVATE SQLite3_INCLUDE_DIRS)
-    target_link_libraries(fcoin_core PUBLIC ${SQLite3_LIBRARIES})
+find_package(leveldb REQUIRED)
+if(LEVELDB_FOUND)
+    target_include_directories(fcoin_core PRIVATE LEVELDB_INCLUDE_DIRS)
+    target_link_libraries(fcoin_core PUBLIC ${LEVELDB_LIBRARIES})
 endif()
 
 include(GNUInstallDirs)

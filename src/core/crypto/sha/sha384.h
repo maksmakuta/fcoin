@@ -2,6 +2,7 @@
 #define FCOIN_SHA384_H
 
 #include <string>
+#include "../../constants.h"
 
 class sha384 {
 private:
@@ -66,6 +67,7 @@ public:
     ~sha384();
 
     static std::string fast(const std::string & input);
+    static hash384 fastH(const std::string & input);
 };
 
 

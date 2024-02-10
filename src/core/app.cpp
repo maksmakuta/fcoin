@@ -60,7 +60,7 @@ vec<str> app::get(const str& key){
     if(exist(key)) {
         return args[key];
     }else{
-        Log::w(strss() << "Arg " << key << " is not exist");
+        Log::w() << "Arg " << key << " is not exist";
         return vec<str>{};
     }
 }

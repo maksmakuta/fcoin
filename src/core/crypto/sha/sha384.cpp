@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <ios>
 #include "sha384.h"
+#include "../../utils.h"
 
 typedef unsigned long long uint64;
 
@@ -160,4 +161,8 @@ void sha384::freeBuffer(uint64** buffer, size_t nBuffer){
 
 std::string sha384::fast(const std::string & input){
     return sha384().hash(input);
+}
+
+hash384 sha384::fastH(const std::string & input){
+    return to_hash384(fast(input));
 }

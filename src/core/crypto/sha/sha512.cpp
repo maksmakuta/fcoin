@@ -2,6 +2,7 @@
 #include <sstream>
 #include <iomanip>
 #include "sha512.h"
+#include "../../utils.h"
 
 typedef unsigned long long uint64;
 
@@ -160,4 +161,8 @@ void sha512::freeBuffer(uint64** buffer, size_t nBuffer){
 
 std::string sha512::fast(const std::string & input){
     return sha512().hash(input);
+}
+
+hash512 sha512::fastH(const std::string & input){
+    return to_hash512(fast(input));
 }

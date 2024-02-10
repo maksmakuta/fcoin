@@ -1,45 +1,43 @@
 #include "logger.h"
 
-#define RES "\033[0m"
-
-void Log::i(const str& msg){
-    log(msg,0);
+str head(u8 lvl){
+    return vec<str>{
+            "\033[37mI:\033[0m ",
+            "\033[32mD:\033[0m ",
+            "\033[33mW:\033[0m ",
+            "\033[31mE:\033[0m "
+    }[lvl];
 }
 
-void Log::d(const str& msg){
-    log(msg,1);
+Log Log::i() {
+    Log l;
+    l.header = head(0);
+    l.newline = false;
+    return l;
 }
 
-void Log::w(const str& msg){
-    log(msg,2);
+Log Log::d() {
+    Log l;
+    l.header = head(1);
+    l.newline = false;
+    return l;
 }
 
-void Log::e(const str& msg){
-    log(msg,3);
+Log Log::w() {
+    Log l;
+    l.header = head(2);
+    l.newline = false;
+    return l;
 }
 
-void Log::i(const strss& msg){
-    Log::i(msg.str());
+Log Log::e() {
+    Log l;
+    l.header = head(3);
+    l.newline = false;
+    return l;
 }
 
-void Log::d(const strss& msg){
-    Log::d(msg.str());
+char endl(){
+    return '\n';
 }
 
-void Log::w(const strss& msg){
-    Log::w(msg.str());
-}
-
-void Log::e(const strss& msg){
-    Log::e(msg.str());
-}
-
-void Log::log(const str& msg,u8 lvl){
-    vec<str> mods = {
-            "\033[37mI: " RES,
-            "\033[32mD: " RES,
-            "\033[33mW: " RES,
-            "\033[31mE: " RES
-    };
-    std::cout << mods[lvl] << msg << std::endl;
-}

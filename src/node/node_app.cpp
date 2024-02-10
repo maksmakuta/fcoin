@@ -1,7 +1,6 @@
 #include "node_app.h"
 #include "../core/logger.h"
 #include "../net/commands.h"
-#include "../core/hex.h"
 #include "../core/errors.h"
 
 NodeApp::NodeApp(int count, char** args) : app(count,args){}
@@ -10,34 +9,39 @@ NodeApp::~NodeApp() = default;
 
 void NodeApp::initSocket(){
     this->sock.bind("tcp://*:" NODE_PORT);
-    Log::i(strss() << "Work on " << this->sock.endpoint());
+    Log::i() << "Work on " << this->sock.endpoint();
 }
 
 void NodeApp::freeSocket(){
     this->sock.unbind();
-    Log::i("Close socket");
+    Log::i() << "Close socket";
 }
 
 [[noreturn]] void NodeApp::run(){
     while (this->isWork){
         vec<u8> raw = sock.receiveBytes();
-        std::copy(raw.begin()+1, raw.end(),data.begin());
+        u8 err = raw[1];
+        if(err != 0){
+            Log::e() << errorString(err);
+            this->isWork = false;
+        }
+        std::copy(raw.begin()+2, raw.end(),data.begin());
         sock.send(work(raw[0]));
         data.clear();
     }
 }
 
 str NodeApp::work(const u8 cmd){
-    strss ss;
+    strss ss;/*
     switch (cmd) {
         case NO_CMD:
-            ss << hex::encode(NO_CMD);
+            ss << hex::encode(vec<u8>{NO_CMD,ERR_GOOD});
             break;
         case PING:
-            ss << hex::encode(PONG);
+            ss << hex::encode(vec<u8>{PONG,ERR_GOOD});
             break;
         case PONG :
-            ss << hex::encode(NO_CMD);
+            ss << hex::encode(vec<u8>{NO_CMD,ERR_GOOD});
             break;
         case SYNC_BLK :
             Log::w("Not implemented : SYNC_BLK");
@@ -111,10 +115,11 @@ str NodeApp::work(const u8 cmd){
             break;
         case CMD_ERR :
             Log::e(errorString(data[0]));
+            this->isWork = false;
             break;
         default:
             Log::e(strss() << "Unknown code " << std::hex << cmd);
             break;
-    }
+    }*/
     return ss.str();
 }

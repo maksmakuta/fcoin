@@ -1,6 +1,6 @@
 ## DB
- This project uses SQLite for storing data.  
- SQLite provides C API for working with databases and its simple, fast and provide local access to database.
+ This project uses LevelDB for storing data.  
+ LevelDB provides C/C++ API for working with databases and its simple, fast and provide local access to database.
 
  Main objects for blockchain to store is:
  - block
@@ -14,37 +14,14 @@
 
  Update and delete objects is necessary for blockchain applications
 
-### Define tables
+## How data is stored
 
-    block(
-        hash TEXT,
-        phash TEXT,
-        time TIMESTAMP,
-        tz_root TEXT,
-        tz_count INTEGER
-    )
-
-    transaction{
-        txid TEXT,
-        block TEXT, // link to block by hash
-        time TIMESTAMP,
-        inputs INTEGER, // count of transaction_input
-        inputs_root TEXT,
-        outputs INTEGER, // count of transaction_output
-        outputs_root TEXT,    
-    }
-
-    transaction_input{
-        hash TEXT,
-        output TEXT // hash of output
-        sign TEXT,
-        txid TEXT
-    }
-
-    transaction_output{
-        hash TEXT,
-        sender TEXT,
-        receiver TEXT,
-        amount INTEGER,
-        txid TEXT
-    }
+ Every object can be find with hash, and data is stored in binary format (uses bytebuff.h)
+ But for every type we append special prefix to key.
+ 
+ | type               | prefix | hash size |
+ |--------------------|--------|-----------|
+ | block              | B      | 256       |
+ | transaction        | T      | 512       |
+ | transaction_input  | I      | 384       |
+ | transaction_output | O      | 384       |

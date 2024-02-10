@@ -6,7 +6,7 @@
 
  - C++20
  - CMake 3.20+ (for build)
- - SQLite 3.0+
+ - levelDB 1.20+
  - [zmqpp](https://github.com/zeromq/zmqpp)
  - doctest (only for tests)
  

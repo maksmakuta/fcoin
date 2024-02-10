@@ -6,7 +6,7 @@
  * This can be changed in any time...
  */
 
-//#define NAME          CODE // ARGS
+//      NAME            CODE // ARGS
 #define NO_CMD          0x00
 
 #define PING            0x01

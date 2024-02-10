@@ -2,42 +2,36 @@
 #define FCOIN_BLOCK_H
 
 #include "../constants.h"
+#include "../interface/serializable.h"
 
-class block {
+class block : public serializable {
+private:
+    hash256 hash { 0L };
+    hash256 phash{ 0L };
+    u64 time = 0L;
+    vec<hash384> tx = {};
+
 public:
-    str tz_root;
-    i32 tz_count = 0;
-
     block() = default;
+    block(const hash256& _hash,const hash256& _phash,u64 _time,const vec<hash384>& _tx);
 
-    block(
-        const str& hash,
-        const str& prev_hash,
-        u64 time,
-        const vec<str>& tzData
-    );
+    void deserialize(bytebuff &) override;
+    bytebuff serialize() override;
 
-    [[nodiscard]] str getHash() const;
-    [[nodiscard]] str getPrevHash() const;
+    [[nodiscard]] hash256 getHash() const;
+    [[nodiscard]] hash256 getPHash() const;
     [[nodiscard]] u64 getTime() const;
-    [[nodiscard]] vec<str> getTransactions() const;
+    [[nodiscard]] vec<hash384> getTx() const;
 
-    void setHash(const str&);
-    void setPrevHash(const str&);
-    void setTime(u64);
-    void setTransactions(const vec<str>&);
-
-    [[nodiscard]] bool verify() const;
-
-    static str new_hash(
-            const str& prev_hash,
-            u64 time,
-            const vec<str>& tzData);
+    bool operator == (const block& blk) const;
 
 private:
-    str block_hash,block_prev_hash;
-    u64 timestamp = 0u;
-    vec<str> transactions;
+    //can use serializer
+    void setHash(const hash256& data);
+    void setPHash(const hash256& data);
+    void setTime(u64 data);
+    void setTx(const vec<hash384>& data);
+
 };
 
 

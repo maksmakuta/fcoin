@@ -1,41 +1,72 @@
 #include "merkle_tree.h"
+#include "../logger.h"
+#include "sha/sha384.h"
+#include "sha/sha512.h"
 #include "sha/sha256.h"
+#include "../utils.h"
 
-void merkle_tree::update(const str& input){
-    data.push_back(hash(input));
+merkle_tree::merkle_tree(u32 _size){
+    this->size = _size;
 }
 
-void merkle_tree::update(const vec<str>& input){
-    for(const str& s : input){
-        update(s);
+void merkle_tree::push(const vec<str>& data){
+    for(const str& item : data){
+        push(item);
     }
+}
+
+void merkle_tree::push(const str& data){
+    items.push_back(data);
 }
 
 str merkle_tree::root(){
-    if(data.empty())
-        return "";
-    while (data.size() > 1){
-        vec<str> nodes;
-        for(i32 i = 0; i < data.size(); i += 2){
-            str dat;
-            if(i + 1 < data.size()) {
-                dat = data[i] + data[i + 1];
-            }else{
-                dat = data[i] + data[i];
-            }
-            nodes.push_back(hash(dat));
-        }
-        data = nodes;
+    calcRoot();
+    return root_hash;
+}
+
+void merkle_tree::calcRoot(){
+    if (items.size() % 2 != 0) {
+        items.push_back(items.back());
     }
-    return data[0];
+    tree.insert(tree.end(), items.begin(), items.end());
+    for (size_t levelSize = items.size(); levelSize > 1; levelSize = (levelSize + 1) / 2) {
+        for (size_t i = 0; i < levelSize; i += 2) {
+            std::string left = tree[tree.size() - levelSize + i];
+            std::string right = tree[tree.size() - levelSize + i + 1];
+            tree.push_back(hash(left + right));
+        }
+    }
+    root_hash = tree.back();
 }
 
-str merkle_tree::hash(const str& input){
-    return sha256::fast(input);
+hash256 merkle_tree::fast256(const vec<str>& inputs){
+    merkle_tree tree(256);
+    tree.push(inputs);
+    return to_hash256(tree.root());
 }
 
-str merkle_tree::fast(const vec<str> &input) {
-    merkle_tree t;
-    t.update(input);
-    return t.root();
+hash384 merkle_tree::fast384(const vec<str>& inputs){
+    merkle_tree tree(384);
+    tree.push(inputs);
+    return to_hash384(tree.root());
+}
+
+hash512 merkle_tree::fast512(const vec<str>& inputs){
+    merkle_tree tree(512);
+    tree.push(inputs);
+    return to_hash512(tree.root());
+}
+
+str merkle_tree::hash(const str &input) const {
+    switch (this->size) {
+        case 256:
+            return sha256::fast(input);
+        case 384:
+            return sha384::fast(input);
+        case 512:
+            return sha512::fast(input);
+        default:
+            Log::i() << "Unsupported size : " << this->size << endl();
+            return "";
+    }
 }

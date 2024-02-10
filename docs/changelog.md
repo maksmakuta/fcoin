@@ -1,5 +1,14 @@
 ## FCoin changelog
 
+### v. 0.4.3 (beta)
+ - implementation of bytebuff
+ - use leveldb instead sqlite (and sql too)
+ - own types for hash (256,384 and 512 bits) based on std::array
+ - rewrite block class to use bytebuff and new hash types
+ - use Log as stream without strss
+ - rewrite merkle tree to return hash256,hash384 and hash512 instead of str in fast variants
+ - add to sha hash function to return hash types
+
 ### v. 0.4.2 (beta)
  - remove unused functions from utils.h/cpp
  - add hex converter (hex.h/cpp)

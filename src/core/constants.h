@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <type_traits>
 
 #define DATA_DIR "data"
 
@@ -40,8 +41,6 @@ typedef u_int64_t u64;
 typedef float   f32;
 typedef double  f64;
 
-typedef u8 byte;
-
 #define null NULL
 
 using str = std::string;
@@ -52,5 +51,9 @@ using vec = std::vector<T>;
 
 template<typename T,u64 S>
 using arr = std::array<T,S>;
+
+typedef arr<u64,4> hash256;
+typedef arr<u64,6> hash384;
+typedef arr<u64,8> hash512;
 
 #endif //FCOIN_CONSTANTS_H

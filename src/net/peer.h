@@ -6,6 +6,7 @@
 #include <zmqpp/message.hpp>
 #include "../core/constants.h"
 #include "../core/hex.h"
+#include "../core/logger.h"
 
 enum NodeType{
     FULL,
@@ -55,8 +56,9 @@ public:
     }
 
     vec<u8> receiveBytes(){
-        str bytes = receive();
-        return hex::decodeVec(bytes);
+        //        str bytes = receive();
+        Log::w("Not implemented");
+        return vec<u8>{};
     }
 
     str endpoint(){

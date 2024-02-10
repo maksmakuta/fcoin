@@ -3,7 +3,6 @@
 
 #include "./crypto/secp256k1.h"
 #include "components/transaction.h"
-#include "db/utxo_db.h"
 
 class wallet {
 public:
@@ -19,7 +18,7 @@ public:
 
 private:
     secp256k1::keypair kp;
-    utxo_db udb;
+//    utxo_db udb;
 };
 
 

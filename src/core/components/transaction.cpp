@@ -46,13 +46,13 @@ void transaction::setBlock(const str&  input){
 void transaction::setInputs(const vec<str>& input){
     this->inputs = input;
     this->input_size = (i32)(this->inputs.size());
-    this->input_root = merkle_tree::fast(input);
+    //this->input_root = merkle_tree::fast(input);
 }
 
 void transaction::setOutputs(const vec<str>& output){
     this->outputs = output;
     this->output_size = (i32)(this->outputs.size());
-    this->output_root = merkle_tree::fast(output);
+    //this->output_root = merkle_tree::fast(output);
 }
 
 void transaction::setTime(u64 input){

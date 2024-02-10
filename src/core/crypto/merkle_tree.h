@@ -3,18 +3,29 @@
 
 #include "../constants.h"
 
-class merkle_tree {
+class merkle_tree{
 public:
+
     merkle_tree() = default;
-    void update(const str& input);
-    void update(const vec<str>& input);
+    explicit merkle_tree(u32 _size);
+
+    void push(const vec<str>& data);
+    void push(const str& data);
+
     str root();
 
-    static str fast(const vec<str>& input);
-private:
-    static str hash(const str& input);
-    vec<str> data;
-};
+    static hash256 fast256(const vec<str>& inputs);
+    static hash384 fast384(const vec<str>& inputs);
+    static hash512 fast512(const vec<str>& inputs);
 
+private:
+    u32 size = 256;
+    vec<str> items;
+    vec<str> tree;
+    str root_hash ;
+
+    [[nodiscard]] str hash(const str& input) const;
+    void calcRoot();
+};
 
 #endif //FCOIN_MERKLE_TREE_H

@@ -1,8 +1,9 @@
-#include <iostream>
-#include <zmqpp/zmqpp.hpp>
-#include "../core/constants.h"
-
-using namespace std;
+#include "../core/crypto/merkle_tree.h"
+#include "../core/utils.h"
+#include "../core/logger.h"
+#include "../core/crypto/sha/sha384.h"
+#include "../core/components/block.h"
+#include "../core/crypto/sha/sha256.h"
 
 /**
  * usage: ./miner --node localhost:8989
@@ -16,6 +17,9 @@ using namespace std;
  */
 
 int main(int argc, char **argv) {
-    std::cout << "Hello, Miner!\n";
+
+
+
+
     return 0;
 }

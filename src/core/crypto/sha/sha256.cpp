@@ -1,4 +1,5 @@
 #include "sha256.h"
+#include "../../utils.h"
 #include <string>
 #include <cstring>
 #include <iostream>
@@ -161,4 +162,8 @@ void sha256::freeBuffer(uint32** buffer, size_t nBuffer){
 
 std::string sha256::fast(const std::string & input){
     return sha256().hash(input);
+}
+
+hash256 sha256::fastH(const std::string & input){
+    return to_hash256(fast(input));
 }

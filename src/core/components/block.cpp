@@ -1,53 +1,77 @@
-#include <utility>
 #include "block.h"
-#include "../crypto/merkle_tree.h"
-#include "../crypto/sha/sha256.h"
 
-block::block(const str& hash, const str& prev_hash, u64 time, const vec<str>& tzData) {
-    this->setHash(hash);
-    this->setPrevHash(prev_hash);
-    this->setTime(time);
-    this->setTransactions(tzData);
+block::block(const hash256& _hash,const hash256& _phash,u64 _time,const vec<hash384>& _tx){
+    this->setHash(_hash);
+    this->setPHash(_phash);
+    this->setTime(_time);
+    this->setTx(_tx);
 }
 
-str block::getHash() const{
-    return this->block_hash;
+void block::deserialize(bytebuff &buff){
+    buff.move(0);
+    hash256 h = buff.getH256();
+    hash256 p = buff.getH256();
+    u64 t = buff.get<u64>();
+    vec<hash384> x = buff.getVH384();
+
+    this->setHash(h);
+    this->setPHash(p);
+    this->setTime(t);
+    this->setTx(x);
 }
 
-str block::getPrevHash() const{
-    return this->block_prev_hash;
+bytebuff block::serialize(){
+    bytebuff buff;
+    buff.put(hash);
+    buff.put(phash);
+    buff.put<u64>(time);
+    buff.put(tx);
+    return buff;
+}
+
+hash256 block::getHash() const{
+    return this->hash;
+}
+
+hash256 block::getPHash() const{
+    return this->phash;
 }
 
 u64 block::getTime() const{
-    return this->timestamp;
+    return this->time;
 }
 
-vec<str> block::getTransactions() const{
-    return this->transactions;
+vec<hash384> block::getTx() const{
+    return this->tx;
 }
 
-bool block::verify() const{
-    return new_hash(block_prev_hash,timestamp,transactions) == this->block_hash;
+void block::setHash(const hash256& data){
+    std::copy(data.begin(), data.end(),this->hash.begin());
 }
 
-void block::setHash(const str& input){
-    this->block_hash = input;
+void block::setPHash(const hash256& data){
+    std::copy(data.begin(), data.end(),this->phash.begin());
 }
 
-void block::setPrevHash(const str& input){
-    this->block_prev_hash = input;
+void block::setTime(u64 data){
+    this->time = data;
 }
 
-void block::setTime(u64 input){
-    this->timestamp = input;
+void block::setTx(const vec<hash384>& data){
+    for(const hash384& h : data)
+        this->tx.push_back(h);
 }
 
-void block::setTransactions(const vec<str>& input){
-    this->transactions = input;
-    this->tz_count = (i32)transactions.size();
-    this->tz_root = merkle_tree::fast(this->transactions);
-}
-
-str block::new_hash(const str& prev_hash,u64 time,const vec<str>& tzData){
-    return sha256::fast(prev_hash + std::to_string(time) + std::to_string(tzData.size()) + merkle_tree::fast(tzData));
+bool block::operator == (const block& blk) const{
+    bool h = hash == blk.hash;
+    bool p = phash == blk.phash;
+    bool t = time == blk.time;
+    bool x = tx.size() == blk.tx.size();
+    if(x) {
+        for (u32 i = 0; i < tx.size(); i++) {
+            if (tx[i] != blk.tx[i])
+                return false;
+        }
+    }
+    return h && p && t && x;
 }

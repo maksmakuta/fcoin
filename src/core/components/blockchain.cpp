@@ -3,12 +3,8 @@
 #include "../logger.h"
 
 blockchain::blockchain() {
-    bdb.init();
-    tdb.init();
-    tidb.init();
-    todb.init();
 }
-
+/*
 void blockchain::add(const block &blk){
     if(blk.getPrevHash().empty()){
         Log::i("Add Genesis block into blockchain");
@@ -84,14 +80,14 @@ std::optional<transaction_output> blockchain::getTransactionOutput(const str &tx
         object = val;
     }
     return object;
-}
+}*/
 
 block blockchain::last(){
-    std::optional<block> blk = getBlock(data.lastHash);
-    if(blk){
-        return blk.value();
-    }else{
-        Log::w("Unable to found last block");
-        return {};
-    }
+    //std::optional<block> blk = getBlock(data.lastHash);
+    //if(blk){
+    //    return blk.value();
+    //}else{
+    //    Log::w("Unable to found last block");
+    //    return {};
+    //}
 }

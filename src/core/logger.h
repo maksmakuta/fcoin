@@ -4,19 +4,37 @@
 #include <iostream>
 #include "constants.h"
 
+char endl();
+
 class Log{
 public:
-    static void i(const str& msg);
-    static void d(const str& msg);
-    static void w(const str& msg);
-    static void e(const str& msg);
+    static Log i();
+    static Log d();
+    static Log w();
+    static Log e();
 
-    static void i(const strss& msg);
-    static void d(const strss& msg);
-    static void w(const strss& msg);
-    static void e(const strss& msg);
+    template<typename T>
+    Log& operator<< (const T& data){
+        if(newline){
+            this->stream << data;
+        }else{
+            this->stream << header << data;
+            newline = true;
+        }
+        return *this;
+    }
+
+    Log& operator<< (char data){
+        this->stream << data;
+        if(data == endl())
+            newline = false;
+        return *this;
+    }
+
 private:
-    static void log(const str& msg,u8 lvl);
+    bool newline = false;
+    str header;
+    std::ostream& stream = std::cout;
 };
 
 #endif //FCOIN_LOGGER_H

@@ -1,16 +1,19 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG_NO_EXCEPTIONS
+#define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 #include <doctest/doctest.h>
+
 #include "../src/core/crypto/sha/sha256.h"
 #include "../src/core/crypto/sha/sha384.h"
 #include "../src/core/crypto/sha/sha512.h"
 #include "../src/core/crypto/ripemd160.h"
 #include "../src/core/crypto/BigInt.h"
 #include "../src/core/crypto/secp256k1.h"
-#include "../src/core/db/transaction_output_db.h"
 #include "../src/core/wallet.h"
 #include "../src/core/components/coins.h"
-#include "../src/core/hex.h"
 #include "../src/core/bytebuff.h"
+#include "../src/core/components/block.h"
+#include "../src/core/utils.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -139,55 +142,6 @@ transaction_output randTO(){
     return t;
 }
 
-TEST_CASE("db push and pop"){
-    auto db = transaction_output_db();
-    db.init();
-
-    transaction_output a = randTO();
-    transaction_output b = randTO();
-    transaction_output c = randTO();
-    transaction_output d = randTO();
-
-    db.put(a);
-
-    transaction_output ta = db.pull(a.hash);
-
-    CHECK_EQ(a.hash    ,ta.hash    );
-    CHECK_EQ(a.sender  ,ta.sender  );
-    CHECK_EQ(a.receiver,ta.receiver);
-    CHECK_EQ(a.amount  ,ta.amount  );
-    CHECK_EQ(a.txid    ,ta.txid    );
-
-    db.newTx();
-    db.put(b);
-    db.put(c);
-    db.put(d);
-    db.commit();
-
-    auto ba = db.pull(b.hash);
-    auto ca = db.pull(c.hash);
-    auto da = db.pull(d.hash);
-
-    CHECK_EQ(b.hash    ,ba.hash    );
-    CHECK_EQ(b.sender  ,ba.sender  );
-    CHECK_EQ(b.receiver,ba.receiver);
-    CHECK_EQ(b.amount  ,ba.amount  );
-    CHECK_EQ(b.txid    ,ba.txid    );
-
-    CHECK_EQ(c.hash    ,ca.hash    );
-    CHECK_EQ(c.sender  ,ca.sender  );
-    CHECK_EQ(c.receiver,ca.receiver);
-    CHECK_EQ(c.amount  ,ca.amount  );
-    CHECK_EQ(c.txid    ,ca.txid    );
-
-    CHECK_EQ(d.hash    ,da.hash    );
-    CHECK_EQ(d.sender  ,da.sender  );
-    CHECK_EQ(d.receiver,da.receiver);
-    CHECK_EQ(d.amount  ,da.amount  );
-    CHECK_EQ(d.txid    ,da.txid    );
-
-    db.clear();
-}
 
 TEST_CASE("wallet things"){
     auto walletA = wallet::generate();
@@ -214,23 +168,152 @@ TEST_CASE("parse coins"){
     CHECK_EQ(a.enc(),10000000000000000000UL);
 }
 
-TEST_CASE("hex serialization"){
-    u8 a = 0x99;
-    str hexA = hex::encode(a);
-    u8 b = hex::decode(hexA);
-    CHECK_EQ(a,b);
+#define isEqualVec(a,b) \
+    CHECK_EQ(a.size(),b.size()); \
+    for(u32 i = 0;i < a.size();i++){ \
+        CHECK_EQ(a[i],b[i]); \
+    } \
 
-    vec<u8> vecA = {0x01,0x02,0x04,0x08,0x10,0xFF};
-    str vA = hex::encode(vecA);
-    CHECK_EQ(vecA.size() * 2,vA.length());
-    vec<u8> res = hex::decodeVec(vA);
-    CHECK_EQ(vecA.size(),res.size());
-    for(u32 i = 0;i < res.size();i++) {
-        CHECK_EQ(vecA[i], res[i]);
+TEST_CASE("bytebuff"){
+    bytebuff buff;
+
+    buff.put<u8 >(0x01);
+    buff.put<u16>(0x0102);
+    buff.put<u32>(0x01020304);
+    buff.put<u64>(0x0101020304050607);
+    buff.put<i8 >(0x0F);
+    buff.put<i16>(0x10F1);
+    buff.put<i32>(0x10F1F2F3);
+    buff.put<i64>(0x10F1F2F3F4F5F6F7);
+
+    u8  a = buff.get<u8 >();
+    u16 b = buff.get<u16>();
+    u32 c = buff.get<u32>();
+    u64 d = buff.get<u64>();
+    i8  e = buff.get<i8 >();
+    i16 f = buff.get<i16>();
+    i32 g = buff.get<i32>();
+    i64 h = buff.get<i64>();
+
+    CHECK_EQ(a,0x01);
+    CHECK_EQ(b,0x0102);
+    CHECK_EQ(c,0x01020304);
+    CHECK_EQ(d,0x0101020304050607);
+    CHECK_EQ(e,0x0F);
+    CHECK_EQ(f,0x10F1);
+    CHECK_EQ(g,0x10F1F2F3);
+    CHECK_EQ(h,0x10F1F2F3F4F5F6F7);
+
+    buff.clear();
+
+    srand(time(null));
+
+    u32 count = 1000;
+    Log::i() << "count = " << count << endl();
+
+    vec<u8 >  u8arr; u8arr .reserve(count);
+    vec<u16> u16arr; u16arr.reserve(count);
+    vec<u32> u32arr; u32arr.reserve(count);
+    vec<u64> u64arr; u64arr.reserve(count);
+    vec<i8 >  i8arr; i8arr .reserve(count);
+    vec<i16> i16arr; i16arr.reserve(count);
+    vec<i32> i32arr; i32arr.reserve(count);
+    vec<i64> i64arr; i64arr.reserve(count);
+
+    Log::i() << "generate vectors"<< endl();
+
+    for(u32 i = 0; i < count;i++){
+        u8arr .push_back((u8 )rand() % (sizeof(u8 )*8));
+        u16arr.push_back((u16)rand() % (sizeof(u16)*8));
+        u32arr.push_back((u32)rand() % (sizeof(u32)*8));
+        u64arr.push_back((u64)rand() % (sizeof(u64)*8));
+        i8arr .push_back((i8 )rand() % (sizeof(i8 )*8));
+        i16arr.push_back((i16)rand() % (sizeof(i16)*8));
+        i32arr.push_back((i32)rand() % (sizeof(i32)*8));
+        i64arr.push_back((i64)rand() % (sizeof(i64)*8));
     }
+
+    Log::i() << "insert random data"<< endl();
+
+    buff.putVec<u8 >(u8arr );
+    buff.putVec<u16>(u16arr);
+    buff.putVec<u32>(u32arr);
+    buff.putVec<u64>(u64arr);
+    buff.putVec<i8 >(i8arr );
+    buff.putVec<i16>(i16arr);
+    buff.putVec<i32>(i32arr);
+    buff.putVec<i64>(i64arr);
+
+    Log::i() << "write into buffer"<< endl();
+
+    str sBuff = buff.string();
+    Log::i() << "buff = " << sBuff << endl();
+    Log::i() << " len = " << sBuff.length() / 2 << endl();
+
+    vec<u8 >  u8C = buff.getVec<u8 >();
+    vec<u16> u16C = buff.getVec<u16>();
+    vec<u32> u32C = buff.getVec<u32>();
+    vec<u64> u64C = buff.getVec<u64>();
+    vec<i8 >  i8C = buff.getVec<i8 >();
+    vec<i16> i16C = buff.getVec<i16>();
+    vec<i32> i32C = buff.getVec<i32>();
+    vec<i64> i64C = buff.getVec<i64>();
+
+    Log::i() << "read from buffer"<< endl();
+
+    isEqualVec(u8arr ,u8C)
+    isEqualVec(u16arr,u16C)
+    isEqualVec(u32arr,u32C)
+    isEqualVec(u64arr,u64C)
+    isEqualVec(i8arr ,i8C)
+    isEqualVec(i16arr,i16C)
+    isEqualVec(i32arr,i32C)
+    isEqualVec(i64arr,i64C)
+
+    buff.clear();
+
+    hash256 h1 = sha256::fastH("1");
+    hash384 h2 = sha384::fastH("1");
+    hash512 h3 = sha512::fastH("1");
+
+    buff.put(h1);
+    buff.put(h2);
+    buff.put(h3);
+
+    Log::i() << "len  = " << buff.len() << endl();
+    Log::i() << "data = " << buff.string() << endl();
+
+    hash256 h10 = buff.getH256();
+    hash384 h20 = buff.getH384();
+    hash512 h30 = buff.getH512();
+
+    isEqualVec(h1,h10)
+    isEqualVec(h2,h20)
+    isEqualVec(h3,h30)
+
 }
 
-TEST_CASE("bytebuff tests"){
-    bytebuff buff;
+TEST_CASE("block de/serialization"){
+    srand(time(null));
+    vec<hash384> tx;
+    for(u32 i = 0; i < rand() % 10;i++){
+        tx.push_back(sha384::fastH((strss() << "transaction" << i).str()));
+    }
+    auto hash = sha256::fastH("block hash");
+    auto phash = sha256::fastH("block previous hash");
+    block blk(hash,phash,timestamp(),tx);
+    bytebuff blockBuff = blk.serialize();
+
+    //Log::i() << "len  = " << blockBuff.len() << endl();
+    //Log::i() << "buff = " << blockBuff.string() << endl();
+
+    block b;
+    b.deserialize(blockBuff);
+    CHECK_EQ(blk == b,true);
+    //Log::i() << " ==? " << (blk == b ? "good" : "bad") << endl();
+    //Log::i() << "hash   = " << to_string(b.getHash()) << endl();
+    //Log::i() << "phash  = " << to_string(b.getPHash()) << endl();
+    //Log::i() << "time   = " << b.getTime() << endl();
+    //Log::i() << "tx len = " << b.getTx().size() << endl();
 
 }

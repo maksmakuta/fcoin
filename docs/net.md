@@ -47,9 +47,13 @@
 
 ### Packets
 
- All packets consist of:  
- - command code (1 byte)
- - raw data (any length)
+ All packets consist of:
+
+| name         | size (bytes) |
+|--------------|--------------|
+| command code | 1            |
+| error code   | 1            |
+| data         | any          |
 
  Response also contains command code to verify responses, because all data transferred in binary format.
  Check [commands.h](../src/net/commands.h) for more details

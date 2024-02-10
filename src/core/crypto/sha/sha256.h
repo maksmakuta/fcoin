@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <string>
+#include "../../constants.h"
 
 class sha256 {
 
@@ -62,6 +63,7 @@ public:
     ~sha256();
 
     static std::string fast(const std::string & input);
+    static hash256 fastH(const std::string & input);
 };
 
 

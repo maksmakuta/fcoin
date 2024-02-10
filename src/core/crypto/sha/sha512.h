@@ -2,6 +2,7 @@
 #define FCOIN_SHA512_H
 
 #include <string>
+#include "../../constants.h"
 
 class sha512 {
 
@@ -67,6 +68,7 @@ public:
     ~sha512();
 
     static std::string fast(const std::string & input);
+    static hash512 fastH(const std::string & input);
 };
 
 
