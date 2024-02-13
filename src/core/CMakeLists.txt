@@ -18,15 +18,8 @@ add_library(fcoin_core SHARED
         crypto/sha/sha512.cpp
         crypto/sha/sha512.h
         crypto/merkle_tree.h
-        crypto/secp256k1.cpp
-        crypto/secp256k1.h
-        crypto/BigInt.cpp
-        crypto/BigInt.h
         crypto/ripemd160.cpp
         crypto/ripemd160.h
-        crypto/sharand.h
-        exception/runtime_exception.cpp
-        exception/runtime_exception.h
         components/transaction.cpp
         components/transaction.h
         utils.cpp
@@ -45,6 +38,12 @@ add_library(fcoin_core SHARED
         bytebuff.h
         interface/serializable.h
         crypto/merkle_tree.cpp
+        components/transaction_input.cpp
+        components/transaction_input.h
+        components/transaction_output.cpp
+        components/transaction_output.h
+        bigint.cpp
+        bigint.h
 )
 
 find_package(leveldb REQUIRED)

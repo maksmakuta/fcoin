@@ -1,33 +1,53 @@
 #include "transaction.h"
-#include "../crypto/merkle_tree.h"
 #include "../utils.h"
 
 
 transaction::transaction() = default;
 
-transaction::transaction(
-        const str& parent,
-        const vec<str>& iData,
-        const vec<str>& oData){
-    setBlock(parent);
-    setInputs(iData);
-    setOutputs(oData);
-    this->time = timestamp();
+transaction::transaction(const hash256& _block,const vec<hash384>& _inputs,const vec<hash384>& _outputs){
+    setBlock(_block);
+    setInputs(_inputs);
+    setOutputs(_outputs);
+    setTime(timestamp());
 }
 
-str transaction::getTXID() const{
+transaction::transaction(const vec<hash384>& _inputs,const vec<hash384>& _outputs){
+    setInputs(_inputs);
+    setOutputs(_outputs);
+    setTime(timestamp());
+}
+
+void transaction::deserialize(bytebuff & buff){
+    setTXID(buff.getH512());
+    setBlock(buff.getH256());
+    setTime(buff.get<u64>());
+    setInputs(buff.getVH384());
+    setOutputs(buff.getVH384());
+}
+
+bytebuff transaction::serialize(){
+    bytebuff buff;
+    buff.put(getTXID());
+    buff.put(getBlock());
+    buff.put(getTime());
+    buff.put(getInputs());
+    buff.put(getOutputs());
+    return buff;
+}
+
+hash512 transaction::getTXID() const{
     return this->txid;
 }
 
-str transaction::getBlock() const{
+hash256 transaction::getBlock() const{
     return this->block;
 }
 
-vec<str> transaction::getInputs() const{
+vec<hash384> transaction::getInputs() const{
     return this->inputs;
 }
 
-vec<str> transaction::getOutputs() const{
+vec<hash384> transaction::getOutputs() const{
     return this->outputs;
 }
 
@@ -35,24 +55,20 @@ u64 transaction::getTime() const{
     return this->time;
 }
 
-void transaction::setTXID(const str& input){
-    this->txid = input;
+void transaction::setTXID(const hash512 & data){
+    std::copy(data.begin(), data.end(),this->txid.begin());
 }
 
-void transaction::setBlock(const str&  input){
-    this->block = input;
+void transaction::setBlock(const hash256 &data){
+    std::copy(data.begin(), data.end(),this->block.begin());
 }
 
-void transaction::setInputs(const vec<str>& input){
-    this->inputs = input;
-    this->input_size = (i32)(this->inputs.size());
-    //this->input_root = merkle_tree::fast(input);
+void transaction::setInputs( const vec<hash384> &data){
+    std::copy(data.begin(), data.end(),this->inputs.begin());
 }
 
-void transaction::setOutputs(const vec<str>& output){
-    this->outputs = output;
-    this->output_size = (i32)(this->outputs.size());
-    //this->output_root = merkle_tree::fast(output);
+void transaction::setOutputs(const vec<hash384> &data){
+    std::copy(data.begin(), data.end(),this->outputs.begin());
 }
 
 void transaction::setTime(u64 input){

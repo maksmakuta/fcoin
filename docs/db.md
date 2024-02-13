@@ -1,4 +1,5 @@
 ## DB
+
  This project uses LevelDB for storing data.  
  LevelDB provides C/C++ API for working with databases and its simple, fast and provide local access to database.
 
@@ -14,9 +15,10 @@
 
  Update and delete objects is necessary for blockchain applications
 
-## How data is stored
+### How data is stored
 
- Every object can be find with hash, and data is stored in binary format (uses bytebuff.h)
+ Every object can be found with hash, and data is stored in binary format (uses bytebuff.h)
+ Every object saved with oun database to provide fast and secure storing
  But for every type we append special prefix to key.
  
  | type               | prefix | hash size |

@@ -7,13 +7,11 @@
 #include "../src/core/crypto/sha/sha384.h"
 #include "../src/core/crypto/sha/sha512.h"
 #include "../src/core/crypto/ripemd160.h"
-#include "../src/core/crypto/BigInt.h"
-#include "../src/core/crypto/secp256k1.h"
 #include "../src/core/wallet.h"
 #include "../src/core/components/coins.h"
-#include "../src/core/bytebuff.h"
 #include "../src/core/components/block.h"
 #include "../src/core/utils.h"
+#include "../src/core/bigint.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -44,104 +42,8 @@ TEST_CASE("hashing text with ripemd160"){
 }
 
 TEST_CASE("BigInt operators"){
-    auto a = BigInt();
-    auto b = BigInt(1);
-    auto c = BigInt("2");
-    auto d = BigInt::fromHex("ABC");
-    auto e = BigInt::fromBin("011011001");
 
-    CHECK_EQ(a.to_string(),"0");
-    CHECK_EQ(b.to_string(),"1");
-    CHECK_EQ(c.to_string(),"2");
-    CHECK_EQ(d.to_string(),"2748");
-    CHECK_EQ(e.to_string(),"217");
-
-    CHECK_EQ(a.to_int(),0);
-    CHECK_EQ(b.to_int(),1);
-    CHECK_EQ(c.to_int(),2);
-    CHECK_EQ(d.to_int(),2748);
-    CHECK_EQ(e.to_int(),217);
-
-    CHECK_EQ((a*b).to_int(),0);
-    CHECK_EQ((a+c).to_int(),2);
-    CHECK_EQ((d/e).to_int(),12);
-    CHECK_EQ((d-c).to_int(),2746);
-
-    CHECK_EQ(pow(c,10),1024);
-    CHECK_EQ(sqrt(BigInt(16)),4);
-    CHECK_EQ(abs(BigInt(-256)),256);
-    CHECK_EQ(gcd(BigInt(1000),BigInt(725)),25);
-    CHECK_EQ(lcm(BigInt(1000),BigInt(725)),29000);
-
-    a = BigInt(-1);
-    b = BigInt("-1");
-    c = BigInt::fromHex("-A");
-    d = BigInt::fromBin("-01110");
-
-    CHECK_EQ(a.to_int(),-1);
-    CHECK_EQ(b.to_int(),-1);
-    CHECK_EQ(c.to_int(),-10);
-    CHECK_EQ(d.to_int(),-14);
-
-    auto t = BigInt("565656469497945163215465689");
-    CHECK_EQ(t.to_hex(),"1D3E66AA7CF591D5448ECD9");
-
-
-    auto x = BigInt::fromBase("156",8);
-    CHECK_EQ(x.to_string(),"110");
 }
-
-TEST_CASE("secp256k1 serializing"){
-    auto kp = secp256k1::generator::gen();
-
-    str data = secp256k1::writer::writePub(kp.pub);
-    auto pub = secp256k1::reader::readPub(data);
-    CHECK_EQ(kp.pub.x, pub.x);
-    CHECK_EQ(kp.pub.y, pub.y);
-
-    auto pubc = secp256k1::public_key_short{ pub.x };
-    data = secp256k1::writer::writePubComp(pubc);
-    auto pubc_s = secp256k1::reader::readPubComp(data);
-    CHECK_EQ(pubc.x, pubc_s.x);
-
-    data = secp256k1::writer::writePriv(kp.priv);
-    auto privc = secp256k1::reader::readPriv(data);
-    CHECK_EQ(kp.priv.secret, privc.secret);
-
-    auto kpc = secp256k1::keypair_short{kp.pub.x,kp.priv.secret};
-    data = secp256k1::writer::writeKeyPairComp(kpc);
-    auto kpc_s = secp256k1::reader::readKeyPairComp(data);
-    CHECK_EQ(kpc.priv, kpc_s.priv);
-    CHECK_EQ(kpc.pub , kpc_s.pub);
-
-    data = secp256k1::writer::writeKeyPair(kp);
-    auto kps = secp256k1::reader::readKeyPair(data);
-    CHECK_EQ(kp.pub.x, kps.pub.x);
-    CHECK_EQ(kp.pub.y, kps.pub.y);
-    CHECK_EQ(kp.priv.secret, kps.priv.secret);
-
-    data.clear();
-}
-
-TEST_CASE("secp256k1 singing and verifying"){
-    str text = "Hello, World!";
-    auto kp = secp256k1::generator::gen();
-    auto sign = secp256k1::sign(kp.priv,text);
-    auto s = secp256k1::verify(kp.pub,text,sign);
-    CHECK_EQ(s,true);
-}
-
-transaction_output randTO(){
-    srand(time(null));
-    transaction_output t;
-    t.hash      = sha256::fast(std::to_string(rand() % 16384));
-    t.sender    = sha384::fast(std::to_string(rand() % (16384*16)));
-    t.receiver  = sha384::fast(std::to_string(rand() % (16384*16)));
-    t.amount    = rand() % 16000000;
-    t.txid      = sha256::fast(t.sender + t.receiver);
-    return t;
-}
-
 
 TEST_CASE("wallet things"){
     auto walletA = wallet::generate();
@@ -296,24 +198,13 @@ TEST_CASE("bytebuff"){
 TEST_CASE("block de/serialization"){
     srand(time(null));
     vec<hash384> tx;
-    for(u32 i = 0; i < rand() % 10;i++){
+    for(u32 i = 0; i < rand() % 10;i++)
         tx.push_back(sha384::fastH((strss() << "transaction" << i).str()));
-    }
     auto hash = sha256::fastH("block hash");
     auto phash = sha256::fastH("block previous hash");
     block blk(hash,phash,timestamp(),tx);
     bytebuff blockBuff = blk.serialize();
-
-    //Log::i() << "len  = " << blockBuff.len() << endl();
-    //Log::i() << "buff = " << blockBuff.string() << endl();
-
     block b;
     b.deserialize(blockBuff);
     CHECK_EQ(blk == b,true);
-    //Log::i() << " ==? " << (blk == b ? "good" : "bad") << endl();
-    //Log::i() << "hash   = " << to_string(b.getHash()) << endl();
-    //Log::i() << "phash  = " << to_string(b.getPHash()) << endl();
-    //Log::i() << "time   = " << b.getTime() << endl();
-    //Log::i() << "tx len = " << b.getTx().size() << endl();
-
 }

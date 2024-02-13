@@ -12,6 +12,15 @@ vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
     return temp;
 }
 
+template<class T>
+vec<T> toVec(const str& items){
+    vec<T> data(items.size());
+    for(char c : items){
+        data.push_back((T)c);
+    }
+    return data;
+}
+
 u64 timestamp();
 
 str to_string(const hash256&);
@@ -21,5 +30,9 @@ str to_string(const hash512&);
 hash256 to_hash256(const str&);
 hash384 to_hash384(const str&);
 hash512 to_hash512(const str&);
+
+std::ostream& operator << (std::ostream& cout, const hash256& hash);
+std::ostream& operator << (std::ostream& cout, const hash384& hash);
+std::ostream& operator << (std::ostream& cout, const hash512& hash);
 
 #endif //FCOIN_UTILS_H

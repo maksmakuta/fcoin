@@ -72,3 +72,18 @@ hash512 to_hash512(const str& hex){
     return hash;
 
 }
+
+std::ostream& operator << (std::ostream& cout, const hash256& hash){
+    cout << to_string(hash);
+    return cout;
+}
+
+std::ostream& operator << (std::ostream& cout, const hash384& hash){
+    cout << to_string(hash);
+    return cout;
+}
+
+std::ostream& operator << (std::ostream& cout, const hash512& hash){
+    cout << to_string(hash);
+    return cout;
+}

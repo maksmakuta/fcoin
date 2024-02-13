@@ -5,21 +5,14 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#include <type_traits>
 
 #define DATA_DIR "data"
 
-#define BLOCK_DB "chain.db"
-#define TZ_DB "transactions.db"
-#define INPUTS_DB "inputs.db"
-#define OUTPUTS_DB "outputs.db"
-#define UTXO_DB "utxo.db"
-
-#define BLOCK_TABLE "blocks"
-#define TZ_TABLE "transactions"
-#define INPUTS_TABLE "inputs"
-#define OUTPUTS_TABLE "outputs"
-#define UTXO_TABLE "utxo"
+#define BLOCK_DB "blocks"
+#define TZ_DB "transactions"
+#define INPUTS_DB "inputs"
+#define OUTPUTS_DB "outputs"
+#define UTXO_DB "utxo"
 
 #define NODE_PORT       "8888"
 #define MINER_PORT      "8900"

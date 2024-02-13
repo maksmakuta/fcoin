@@ -1,9 +1,5 @@
-#include "../core/crypto/merkle_tree.h"
-#include "../core/utils.h"
 #include "../core/logger.h"
-#include "../core/crypto/sha/sha384.h"
-#include "../core/components/block.h"
-#include "../core/crypto/sha/sha256.h"
+#include "../core/bigint.h"
 
 /**
  * usage: ./miner --node localhost:8989
@@ -17,9 +13,6 @@
  */
 
 int main(int argc, char **argv) {
-
-
-
 
     return 0;
 }

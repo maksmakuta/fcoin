@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.4.4 (beta)
+ - rewrite transaction, transaction_input and transaction output to use hash types and bytebuff
+ - add ostream operator for hash types
+ - remove unused code
+ - ready to reimplement bigint 
+
 ### v. 0.4.3 (beta)
  - implementation of bytebuff
  - use leveldb instead sqlite (and sql too)
