@@ -1,5 +1,9 @@
 ## FCoin changelog
 
+### v. 0.4.5 (beta)
+ - add GMP with bigint abstraction layer
+ - ed25519 signing algorithm interface created
+
 ### v. 0.4.4 (beta)
  - rewrite transaction, transaction_input and transaction output to use hash types and bytebuff
  - add ostream operator for hash types

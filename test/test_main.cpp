@@ -41,7 +41,7 @@ TEST_CASE("hashing text with ripemd160"){
     CHECK_EQ(ripemd160::fast(ripemd160::fast("")),"669a1d32371a8f2a7849025ca0d73dc8c89a6cf8");
 }
 
-TEST_CASE("BigInt operators"){
+TEST_CASE("ed25519 signing"){
 
 }
 
