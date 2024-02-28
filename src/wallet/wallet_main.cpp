@@ -1,5 +1,4 @@
 #include <iostream>
-#include <zmqpp/context.hpp>
 #include "../core/constants.h"
 #include "../net/peer.h"
 

@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.4.6 (beta)
+ - add bit manipulator functions to bigint
+ - fix hash loader for bigint
+ - add secp256k1 signing algorithm
+ - merge net library into core
+
 ### v. 0.4.5 (beta)
  - add GMP with bigint abstraction layer
  - ed25519 signing algorithm interface created

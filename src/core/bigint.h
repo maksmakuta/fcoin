@@ -46,15 +46,24 @@ public:
     bool operator >  (const bigint&) const;
     bool operator <  (const bigint&) const;
 
-    bool operator!() const; // check is number != ZERO
+    bool operator!() const; // check is number == ZERO
 
-    str to(u8 base = 10) const;
+    [[nodiscard]] str to(u8 base = 10) const;
     void from(const str& i,u8 base = 10);
 
-    hash256 asH256() const;
-    hash384 asH384() const;
-    hash512 asH512() const;
-    bigint pow(u64 exp) const;
+    void setBit(u64) const;
+    void clearBit(u64) const;
+    void setBits(const vec<u64>&) const;
+    void clearBits(const vec<u64>&) const;
+
+    [[nodiscard]] bool getBit(u64) const;
+
+    [[nodiscard]] hash256 asH256() const;
+    [[nodiscard]] hash384 asH384() const;
+    [[nodiscard]] hash512 asH512() const;
+
+    [[nodiscard]] bigint pow(u64 exp) const;
+    [[nodiscard]] bigint inv(const bigint& exp) const;
 
     static bigint rand(u64 bits);
     static bigint fromH256(const hash256& h);

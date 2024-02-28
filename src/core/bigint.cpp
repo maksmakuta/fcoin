@@ -170,7 +170,7 @@ bool bigint::operator <  (const bigint& n) const {
 }
 
 bool bigint::operator!() const{
-    return mpz_cmp_ui(this->i,0) != 0;
+    return mpz_cmp_ui(this->i,0) == 0;
 }
 
 str bigint::to(u8 base) const {
@@ -190,6 +190,22 @@ bigint bigint::pow(u64 exp) const {
     return bigint(t);
 }
 
+bigint bigint::inv(const bigint& exp) const {
+    mpz_t t;
+    mpz_init(t);
+    if (exp != bigint()) {
+        auto op = mpz_invert(t,this->i,exp.i);
+        if(op == 0){ // no invert
+            printf("No invert found\n");
+            return {};
+        }else{
+            return bigint(t);
+        }
+    }else{
+        return {};
+    }
+}
+
 bigint bigint::rand(u64 bits){
     std::random_device dev;
     std::mt19937_64 rng(dev());
@@ -207,7 +223,7 @@ bigint bigint::rand(u64 bits){
 hash256 bigint::asH256() const {
     hash256 h;
     for (u32 j = 0; j < 4; j++) {
-        h[j] = mpz_getlimbn(i, j);
+        h[j] = mpz_getlimbn(i, 3-j);
     }
     return h;
 }
@@ -215,7 +231,7 @@ hash256 bigint::asH256() const {
 hash384 bigint::asH384() const {
     hash384 h;
     for (u32 j = 0; j < 6; j++) {
-        h[j] = mpz_getlimbn(i, j);
+        h[j] = mpz_getlimbn(i, 5-j);
     }
     return h;
 }
@@ -223,7 +239,7 @@ hash384 bigint::asH384() const {
 hash512 bigint::asH512() const {
     hash512 h;
     for (u32 j = 0; j < 8; j++) {
-        h[j] = mpz_getlimbn(i, j);
+        h[j] = mpz_getlimbn(i, 7-j);
     }
     return h;
 }
@@ -254,4 +270,28 @@ bigint bigint::operator-() {
     mpz_init(t);
     mpz_neg(t,this->i);
     return bigint(t);
+}
+
+void bigint::setBit(u64 j) const{
+    mpz_setbit((mpz_ptr)&i,j);
+}
+
+void bigint::clearBit(u64 j) const{
+    mpz_clrbit((mpz_ptr)&i,j);
+}
+
+void bigint::setBits(const vec<u64>& list) const{
+    for(u64 t : list){
+        setBit(t);
+    }
+}
+
+void bigint::clearBits(const vec<u64>& list) const{
+    for(u64 t : list){
+        clearBit(t);
+    }
+}
+
+bool bigint::getBit(u64 j) const{
+    return mpz_tstbit(this->i,j) == 1;
 }

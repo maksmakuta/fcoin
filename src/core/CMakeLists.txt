@@ -2,7 +2,10 @@ project(fcoin_core)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
 
+find_package(PkgConfig)
+find_package(Threads REQUIRED)
 find_package (leveldb REQUIRED)
 
 add_library(fcoin_core SHARED
@@ -25,8 +28,10 @@ add_library(fcoin_core SHARED
         components/transaction_output.cpp
         components/transaction_output.h
         constants.h
-        crypto/ed25519.cpp
-        crypto/ed25519.h
+        crypto/sign/ed25519.cpp
+        crypto/sign/ed25519.h
+        crypto/sign/secp256k1.cpp
+        crypto/sign/secp256k1.h
         crypto/merkle_tree.cpp
         crypto/merkle_tree.h
         crypto/ripemd160.cpp
@@ -46,17 +51,17 @@ add_library(fcoin_core SHARED
         utils.h
         wallet.cpp
         wallet.h
-
 )
 
-find_package(PkgConfig)
 pkg_check_modules(gmp REQUIRED gmp)
 if(GMP_FOUND)
     target_include_directories(fcoin_core PRIVATE GMP_INCLUDE_DIRS)
     target_link_libraries(fcoin_core PUBLIC ${GMP_LIBRARIES})
 endif()
 
-find_package(leveldb REQUIRED)
+target_include_directories(fcoin_core PRIVATE zmq sodium)
+target_link_libraries(fcoin_core PUBLIC zmq sodium)
+
 if(LEVELDB_FOUND)
     target_include_directories(fcoin_core PRIVATE LEVELDB_INCLUDE_DIRS)
     target_link_libraries(fcoin_core PUBLIC ${LEVELDB_LIBRARIES})

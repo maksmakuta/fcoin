@@ -1,6 +1,6 @@
 #include "node_app.h"
 #include "../core/logger.h"
-#include "../net/commands.h"
+#include "../core/commands.h"
 #include "../core/errors.h"
 
 NodeApp::NodeApp(int count, char** args) : app(count,args){}

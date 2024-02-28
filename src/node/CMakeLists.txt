@@ -7,12 +7,8 @@ add_executable(fcoin_node node_main.cpp
         node_app.h
         node_app.cpp)
 
-target_include_directories(fcoin_node
-        PUBLIC "${CMAKE_SOURCE_DIR}/net"
-        PUBLIC "${CMAKE_SOURCE_DIR}/core")
-target_link_libraries(fcoin_node
-        PUBLIC fcoin_core
-        PUBLIC fcoin_net)
+target_include_directories(fcoin_node PUBLIC "${CMAKE_SOURCE_DIR}/core")
+target_link_libraries(fcoin_node PUBLIC fcoin_core)
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_node

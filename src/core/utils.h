@@ -2,6 +2,7 @@
 #define FCOIN_UTILS_H
 
 #include "constants.h"
+#include <chrono>
 
 template<class I, class O>
 vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
@@ -12,14 +13,7 @@ vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
     return temp;
 }
 
-template<class T>
-vec<T> toVec(const str& items){
-    vec<T> data(items.size());
-    for(char c : items){
-        data.push_back((T)c);
-    }
-    return data;
-}
+str to_time();
 
 u64 timestamp();
 

@@ -56,4 +56,4 @@
 | data         | any          |
 
  Response also contains command code to verify responses, because all data transferred in binary format.
- Check [commands.h](../src/net/commands.h) for more details
+ Check [commands.h](../src/core/commands.h) for more details
