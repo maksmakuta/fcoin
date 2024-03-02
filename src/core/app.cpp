@@ -7,7 +7,6 @@
 
 /**
  * parse args:
- *
  *  -arg name
  *  --arg1 name
  *  --arg2=1
@@ -60,7 +59,7 @@ vec<str> app::get(const str& key){
     if(exist(key)) {
         return args[key];
     }else{
-        Log::w() << "Arg " << key << " is not exist";
+        Log::w << "Arg " << key << " is not exist";
         return vec<str>{};
     }
 }

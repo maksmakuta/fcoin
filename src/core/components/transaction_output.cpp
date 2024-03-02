@@ -16,7 +16,7 @@ void transaction_output::deserialize(bytebuff &buff){
     setTXID(buff.getH512());
 }
 
-bytebuff transaction_output::serialize(){
+bytebuff transaction_output::serialize() const {
     bytebuff buff;
     buff.put(getHash());
     buff.put(getSender());

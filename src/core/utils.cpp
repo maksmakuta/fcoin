@@ -87,7 +87,3 @@ std::ostream& operator << (std::ostream& cout, const hash512& hash){
     cout << to_string(hash);
     return cout;
 }
-
-str to_time(){
-    return "";
-}

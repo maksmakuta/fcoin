@@ -12,8 +12,7 @@
 #include "../src/core/components/block.h"
 #include "../src/core/utils.h"
 #include "../src/core/bigint.h"
-#include "../src/core/crypto/sign/secp256k1.h"
-#include "../src/core/crypto/sign/ed25519.h"
+#include "../src/core/crypto/secp256k1.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -48,14 +47,6 @@ TEST_CASE("secp256k1 signing"){
     secp256k1::keypair kp = secp256k1::generatePair();
     secp256k1::signature s = secp256k1::sign(input,kp);
     bool status = secp256k1::verify(input,s,kp.pub);
-    CHECK(status);
-}
-
-TEST_CASE("ed25519 signing"){
-    str input = "some data";
-    ed25519::keypair kp = ed25519::generatePair();
-    ed25519::signature s = ed25519::sign(input,kp);
-    bool status = ed25519::verify(input,s,kp.pub);
     CHECK(status);
 }
 

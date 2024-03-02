@@ -15,7 +15,7 @@ public:
     transaction_input() = default;
     transaction_input(const hash384& hash,const hash384& ohash,const hash256& pkey,const hash512& sign,const hash512& txid);
 
-    bytebuff serialize() override;
+    [[nodiscard]] bytebuff serialize()  const override;
     void deserialize(bytebuff &) override;
 
     [[nodiscard]] hash384 getHash() const;

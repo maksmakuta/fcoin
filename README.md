@@ -1,6 +1,7 @@
 # fcoin
 
- Microcryptocurrency with PoV consensus algorithm written in C++
+Cryptocurrency with Proof of Vote (PoV) consensus algorithm written in C++  
+In development.
 
 ## Dependencies
 
@@ -8,7 +9,7 @@
  - CMake 3.20+ (for build)
  - levelDB 1.20+
  - GMP 6.0.0+
- - [zmqpp](https://github.com/zeromq/zmqpp)
+ - [zmq](https://github.com/zeromq/libzmq)
  - doctest (only for tests)
  
 ## Docs
@@ -18,5 +19,5 @@
 
 ## Author
 
- Maks Makuta
- MIT Licence
+ Maks Makuta  
+ MIT Licence  

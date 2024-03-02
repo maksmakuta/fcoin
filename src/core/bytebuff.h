@@ -21,7 +21,7 @@ public:
     void put(const vec<hash512>&);
 
     void move(u64);
-    u64 cursor() const;
+    [[nodiscard]] u64 cursor() const;
     void clear();
 
     [[nodiscard]] hash256       getH256();
@@ -31,9 +31,9 @@ public:
     [[nodiscard]] vec<hash384> getVH384();
     [[nodiscard]] vec<hash512> getVH512();
 
-    str string();
-    vec<u8> raw();
-    u64 len();
+    [[nodiscard]] str string() const;
+    [[nodiscard]] vec<u8> raw() const;
+    [[nodiscard]] u64 len() const;
 
     vec<u8> subbuff(u64 pos, u32 len);
     void load(const str&);

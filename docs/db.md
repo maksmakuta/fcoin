@@ -9,9 +9,10 @@
  - transaction_input
  - transaction_output
 
- Every object_db provide 2 operations with DB:
+ Every object_db provide 3 operations with DB:
  - push (insert object into DB)
  - pop (read object from DB)
+ - delete (delete object from DB)
 
  Update and delete objects is necessary for blockchain applications
 
@@ -27,3 +28,4 @@
  | transaction        | T      | 512       |
  | transaction_input  | I      | 384       |
  | transaction_output | O      | 384       |
+ | utxo               | U      | 384       |

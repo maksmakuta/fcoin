@@ -16,7 +16,7 @@ public:
     transaction_output(const hash384& hash,const hash384& sender,const hash384& receiver,u64 coins,const hash512& txid);
 
     void deserialize(bytebuff &) override;
-    bytebuff serialize() override;
+    [[nodiscard]] bytebuff serialize() const override;
 
     [[nodiscard]] hash384 getHash() const;
     [[nodiscard]] hash384 getSender() const;

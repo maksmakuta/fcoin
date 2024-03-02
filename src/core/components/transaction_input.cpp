@@ -8,7 +8,7 @@ transaction_input::transaction_input(const hash384& hash,const hash384& ohash,co
     setTXID(txid);
 }
 
-bytebuff transaction_input::serialize(){
+bytebuff transaction_input::serialize() const {
     bytebuff buff;
     buff.put(getHash());
     buff.put(getOHash());

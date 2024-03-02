@@ -25,18 +25,25 @@ str merkle_tree::root(){
 }
 
 void merkle_tree::calcRoot(){
-    if (items.size() % 2 != 0) {
-        items.push_back(items.back());
-    }
-    tree.insert(tree.end(), items.begin(), items.end());
-    for (size_t levelSize = items.size(); levelSize > 1; levelSize = (levelSize + 1) / 2) {
-        for (size_t i = 0; i < levelSize; i += 2) {
-            std::string left = tree[tree.size() - levelSize + i];
-            std::string right = tree[tree.size() - levelSize + i + 1];
-            tree.push_back(hash(left + right));
+    if(items.empty()){
+        //if no items to build merkle tree return zero hash
+        for(i32 i = 0 ; i < size;i++){
+            root_hash += '0';
         }
+    }else {
+        if (items.size() % 2 != 0) {
+            items.push_back(items.back());
+        }
+        tree.insert(tree.end(), items.begin(), items.end());
+        for (size_t levelSize = items.size(); levelSize > 1; levelSize = (levelSize + 1) / 2) {
+            for (size_t i = 0; i < levelSize; i += 2) {
+                std::string left = tree[tree.size() - levelSize + i];
+                std::string right = tree[tree.size() - levelSize + i + 1];
+                tree.push_back(hash(left + right));
+            }
+        }
+        root_hash = tree.back();
     }
-    root_hash = tree.back();
 }
 
 hash256 merkle_tree::fast256(const vec<str>& inputs){
@@ -57,6 +64,18 @@ hash512 merkle_tree::fast512(const vec<str>& inputs){
     return to_hash512(tree.root());
 }
 
+hash256 merkle_tree::fastH256(const vec<hash256>& inputs){
+    return fast256( mapTo<hash256,str>(inputs, [](const hash256& i){ return to_string(i); }) );
+}
+
+hash384 merkle_tree::fastH384(const vec<hash384>& inputs){
+    return fast384( mapTo<hash384,str>(inputs, [](const hash384& i){ return to_string(i); }) );
+}
+
+hash512 merkle_tree::fastH512(const vec<hash512>& inputs){
+    return fast512( mapTo<hash512,str>(inputs, [](const hash512& i){ return to_string(i); }) );
+}
+
 str merkle_tree::hash(const str &input) const {
     switch (this->size) {
         case 256:
@@ -66,7 +85,7 @@ str merkle_tree::hash(const str &input) const {
         case 512:
             return sha512::fast(input);
         default:
-            Log::i() << "Unsupported size : " << this->size << endl();
+            Log::i << "Unsupported size : " << this->size << endl;
             return "";
     }
 }

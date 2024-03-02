@@ -19,7 +19,7 @@ public:
     transaction(const vec<hash384>& _inputs,const vec<hash384>& _outputs);
 
     void deserialize(bytebuff &) override;
-    bytebuff serialize() override;
+    [[nodiscard]] bytebuff serialize() const override;
 
     [[nodiscard]] hash512 getTXID() const;
     [[nodiscard]] hash256 getBlock() const;

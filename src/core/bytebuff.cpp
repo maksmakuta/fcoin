@@ -59,7 +59,7 @@ hash256   bytebuff::getH256(){
             value[a] = get<u64>();
         }
     }else{
-        Log::e() << "wrong cursor position " << pos << ".." << (pos + 32) << endl();
+        Log::e << "wrong cursor position " << pos << ".." << (pos + 32) << endl;
     }
     return value;
 }
@@ -71,7 +71,7 @@ hash384   bytebuff::getH384(){
             value[a] = get<u64>();
         }
     }else{
-        Log::e() << "wrong cursor position " << pos << ".." << (pos + 48) << endl();
+        Log::e << "wrong cursor position " << pos << ".." << (pos + 48) << endl;
     }
     return value;
 }
@@ -83,7 +83,7 @@ hash512   bytebuff::getH512(){
             value[a] = get<u64>();
         }
     }else{
-        Log::e() << "wrong cursor position " << pos << ".." << (pos + 64) << endl();
+        Log::e << "wrong cursor position " << pos << ".." << (pos + 64) << endl;
     }
     return value;
 }
@@ -121,14 +121,14 @@ vec<u8> bytebuff::subbuff(u64 _pos, u32 len = -1){
         if(_pos <= data.size()){
             return {data.begin() + _pos, data.end()};
         }else{
-            Log::e() << "pos is out of indices" << endl();
+            Log::e << "pos is out of indices" << endl;
             return {};
         }
     }else{
         if(_pos + len <= data.size()){
             return {data.begin() + _pos, data.begin() + _pos + len};
         }else{
-            Log::e() << "pos is out of indices" << endl();
+            Log::e << "pos is out of indices" << endl;
             return {};
         }
     }
@@ -137,7 +137,6 @@ vec<u8> bytebuff::subbuff(u64 _pos, u32 len = -1){
 void bytebuff::move(u64 p){
     pos = p;
 }
-
 
 u64 bytebuff::cursor() const{
     return pos;
@@ -148,7 +147,7 @@ void bytebuff::clear(){
     move(0);
 }
 
-str bytebuff::string(){
+str bytebuff::string() const {
     strss ss;
     ss << std::setfill('0');
     for(u8 b : data) {
@@ -157,11 +156,11 @@ str bytebuff::string(){
     return ss.str();
 }
 
-vec<u8> bytebuff::raw(){
+vec<u8> bytebuff::raw() const {
     return data;
 }
 
-u64 bytebuff::len(){
+u64 bytebuff::len() const {
     return data.size();
 }
 
@@ -192,7 +191,7 @@ T bytebuff::get(){
         }
         return value;
     }else{
-        Log::e() << "Unsupported type" << typeid(T).name() << endl();
+        Log::e << "Unsupported type" << typeid(T).name() << endl;
         return (T)null;
     }
 }
@@ -209,7 +208,7 @@ void bytebuff::put(T item){
             len--;
         }
     }else{
-        Log::e() << "Unsupported type" << typeid(T).name() << endl();
+        Log::e << "Unsupported type" << typeid(T).name() << endl;
     }
 }
 

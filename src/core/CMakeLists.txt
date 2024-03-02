@@ -6,7 +6,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 find_package(PkgConfig)
 find_package(Threads REQUIRED)
-find_package (leveldb REQUIRED)
+find_package(leveldb REQUIRED)
 
 add_library(fcoin_core SHARED
         app.cpp
@@ -28,10 +28,8 @@ add_library(fcoin_core SHARED
         components/transaction_output.cpp
         components/transaction_output.h
         constants.h
-        crypto/sign/ed25519.cpp
-        crypto/sign/ed25519.h
-        crypto/sign/secp256k1.cpp
-        crypto/sign/secp256k1.h
+        crypto/secp256k1.cpp
+        crypto/secp256k1.h
         crypto/merkle_tree.cpp
         crypto/merkle_tree.h
         crypto/ripemd160.cpp
@@ -42,6 +40,9 @@ add_library(fcoin_core SHARED
         crypto/sha/sha384.h
         crypto/sha/sha512.cpp
         crypto/sha/sha512.h
+        crypto/PoV.h
+        crypto/PoV.cpp
+        db.h
         errors.cpp
         errors.h
         interface/serializable.h
@@ -55,17 +56,15 @@ add_library(fcoin_core SHARED
 
 pkg_check_modules(gmp REQUIRED gmp)
 if(GMP_FOUND)
-    target_include_directories(fcoin_core PRIVATE GMP_INCLUDE_DIRS)
+    target_include_directories(fcoin_core PUBLIC ${GMP_INCLUDE_DIRS})
     target_link_libraries(fcoin_core PUBLIC ${GMP_LIBRARIES})
 endif()
 
-target_include_directories(fcoin_core PRIVATE zmq sodium)
+target_include_directories(fcoin_core PUBLIC zmq sodium)
 target_link_libraries(fcoin_core PUBLIC zmq sodium)
 
-if(LEVELDB_FOUND)
-    target_include_directories(fcoin_core PRIVATE LEVELDB_INCLUDE_DIRS)
-    target_link_libraries(fcoin_core PUBLIC ${LEVELDB_LIBRARIES})
-endif()
+target_include_directories(fcoin_core PUBLIC leveldb)
+target_link_libraries(fcoin_core PUBLIC leveldb)
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

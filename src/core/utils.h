@@ -13,8 +13,6 @@ vec<O> mapTo(const vec<I>& inputs, O (f)(const I&)) {
     return temp;
 }
 
-str to_time();
-
 u64 timestamp();
 
 str to_string(const hash256&);

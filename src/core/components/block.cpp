@@ -1,4 +1,7 @@
 #include "block.h"
+#include "../utils.h"
+#include "../crypto/sha/sha256.h"
+#include "../crypto/merkle_tree.h"
 
 block::block(const hash256& _hash,const hash256& _phash,u64 _time,const vec<hash384>& _tx){
     this->setHash(_hash);
@@ -20,7 +23,7 @@ void block::deserialize(bytebuff &buff){
     this->setTx(x);
 }
 
-bytebuff block::serialize(){
+bytebuff block::serialize() const {
     bytebuff buff;
     buff.put(hash);
     buff.put(phash);
@@ -74,4 +77,11 @@ bool block::operator == (const block& blk) const{
         }
     }
     return h && p && t && x;
+}
+
+block block::generic(){
+    u64 t = timestamp();
+    vec<hash384> tx;
+    hash256 h = sha256::fastH(to_string(hash256{ 0 }) + std::to_string(t) + to_string(merkle_tree::fastH384(tx)));
+    return block(h,hash256{0},t,tx);
 }

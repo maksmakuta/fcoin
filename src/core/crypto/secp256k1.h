@@ -1,7 +1,7 @@
 #ifndef FCOIN_SECP256K1_H
 #define FCOIN_SECP256K1_H
 
-#include "../../bigint.h"
+#include "../bigint.h"
 
 class secp256k1 {
 public:

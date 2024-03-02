@@ -16,7 +16,7 @@ public:
     block(const hash256& _hash,const hash256& _phash,u64 _time,const vec<hash384>& _tx);
 
     void deserialize(bytebuff &) override;
-    bytebuff serialize() override;
+    [[nodiscard]] bytebuff serialize() const override;
 
     [[nodiscard]] hash256 getHash() const;
     [[nodiscard]] hash256 getPHash() const;
@@ -24,6 +24,8 @@ public:
     [[nodiscard]] vec<hash384> getTx() const;
 
     bool operator == (const block& blk) const;
+
+    static block generic();
 
 private:
     //can use serializer

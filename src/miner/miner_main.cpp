@@ -1,10 +1,8 @@
-#include <chrono>
-#include <iostream>
-#include <gmpxx.h>
-#include "../core/bigint.h"
-#include "../core/utils.h"
-#include "../core/crypto/sign/ed25519.h"
-#include "../core/crypto/sign/secp256k1.h"
+#include "../core/logger.h"
+#include "../core/crypto/PoV.h"
+#include "../core/crypto/sha/sha512.h"
+#include "../core/db.h"
+#include "../core/components/block.h"
 
 /**
  * usage: ./miner --node localhost:8989
@@ -13,69 +11,60 @@
  *
  * --node ADDR:PORT     set node to comunicate with
  * --wallet {NAME}      specify wallet to receive coins from mining
- *                      [default takes random wallet or find existing one
+ *                      [default takes existing wallet or take
  *                      randomly when user has few wallets]
  */
 
-void ed(const str& input){
-    std::cout << "================| ED25519 |================\n";
-    std::cout << "Generating...\n";
-    auto kps = std::chrono::high_resolution_clock::now();
-    ed25519::keypair kp = ed25519::generatePair();
-    auto kpe = std::chrono::high_resolution_clock::now();
-    std::cout << "private : " << kp.priv << "\n";
-    std::cout << "public  : " << kp.pub << "\n";
-
-    std::cout << "Singing...\n";
-    auto ss = std::chrono::high_resolution_clock::now();
-    ed25519::signature s = ed25519::sign(input,kp);
-    auto se = std::chrono::high_resolution_clock::now();
-    std::cout << "sign    : " << s << "\n";
-
-    std::cout << "Verifying...\n";
-    auto vs = std::chrono::high_resolution_clock::now();
-    bool status = ed25519::verify(input,s,kp.pub);
-    auto ve = std::chrono::high_resolution_clock::now();
-    std::cout << "signature is " << (status ? "valid" : "invalid") << "\n";
-
-    std::cout << "Time stats : \n";
-    std::cout << '\t' << "Generating : " << (kpe - kps) << std::endl;
-    std::cout << '\t' << "Signing    : " << (se - ss) << std::endl;
-    std::cout << '\t' << "Verifying  : " << (ve - vs) << std::endl;
-    std::cout << std::endl;
+void pov(){
+    srand(time(nullptr));
+    PoV pov;
+    for(u32 i = 0; i < rand() % 1000;i++){
+        auto w = secp256k1::generatePair();
+        str seedHash = sha512::fast(std::to_string(rand()));
+        u64 seed = std::stoull(seedHash.substr(rand() % (seedHash.size() - 8), 8), nullptr, 16);
+        pov.add(seed,w.pub);
+    }
+    Log::i << "Winner : " << to_string(pov.getWinner()) << '\n';
+    pov.list();
 }
 
-void secp(const str& input){
-    std::cout << "================| SECP256K1 |================\n";
-    std::cout << "Generating...\n";
-    auto kps = std::chrono::high_resolution_clock::now();
-    secp256k1::keypair kp = secp256k1::generatePair();
-    auto kpe = std::chrono::high_resolution_clock::now();
-    std::cout << "private : " << kp.priv << "\n";
-    std::cout << "public  : " << kp.pub << "\n";
+class item : public serializable{
+public:
+    item() : serializable(),a(0),b(0),c(0){ }
+    item(u64 _a,u64 _b,u64 _c) : serializable(),a(_a),b(_b),c(_c){ }
 
-    std::cout << "Singing...\n";
-    auto ss = std::chrono::high_resolution_clock::now();
-    secp256k1::signature s = secp256k1::sign(input,kp);
-    auto se = std::chrono::high_resolution_clock::now();
-    std::cout << "sign    : " << s << "\n";
+    void deserialize(bytebuff &buff) override{
+        a = buff.get<u64>();
+        b = buff.get<u64>();
+        c = buff.get<u64>();
+    }
 
-    std::cout << "Verifying...\n";
-    auto vs = std::chrono::high_resolution_clock::now();
-    bool status = secp256k1::verify(input,s,kp.pub);
-    auto ve = std::chrono::high_resolution_clock::now();
-    std::cout << "signature is " << (status ? "valid" : "invalid") << "\n";
+    void info(){
+        Log::i << "a = " << a << " | b = " << b << " | c = " << c << endl;
+    }
 
-    std::cout << "Time stats : \n";
-    std::cout << '\t' << "Generating : " << (kpe - kps) << std::endl;
-    std::cout << '\t' << "Signing    : " << (se - ss) << std::endl;
-    std::cout << '\t' << "Verifying  : " << (ve - vs) << std::endl;
-    std::cout << std::endl;
-}
+    [[nodiscard]] bytebuff serialize() const override{
+        bytebuff bb;
+        bb.put(a);
+        bb.put(b);
+        bb.put(c);
+        return bb;
+    }
+
+private:
+    u64 a,b,c;
+};
 
 int main(/*int argc, char **argv*/) {
-    str data = "hello, world!";
-    ed(data);
-    secp(data);
+    db<item> d("/tmp/fcoin/db");
+    item a(1,2,3);
+    d.push("0", a);
+    std::optional<item> b = d.pull("1");
+    a.info();
+    if(b) {
+        b.value().info();
+    }else{
+        Log::e << "error to fetch item" << endl;
+    }
     return 0;
 }

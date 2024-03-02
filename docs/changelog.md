@@ -1,5 +1,14 @@
 ## FCoin changelog
 
+### v. 0.4.7 (beta)
+ - remove ed25519 algorithm due to optimization and usability and simplicity
+ - add generic block function in block
+ - add new functions to merkle_tree
+ - add time to log output and update some log usage
+ - db class now universal
+ - fix leveldb linking in cmake
+ - rewrite blockchain class to use db class as backend
+
 ### v. 0.4.6 (beta)
  - add bit manipulator functions to bigint
  - fix hash loader for bigint

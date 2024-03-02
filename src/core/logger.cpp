@@ -1,5 +1,7 @@
 #include "logger.h"
 
+char endl = '\n';
+
 str head(u8 lvl){
     return vec<str>{
             "\033[37mI:\033[0m ",
@@ -9,35 +11,11 @@ str head(u8 lvl){
     }[lvl];
 }
 
-Log Log::i() {
-    Log l;
-    l.header = head(0);
-    l.newline = false;
-    return l;
+Log::Log(const str& h){
+    this->header = h;
 }
 
-Log Log::d() {
-    Log l;
-    l.header = head(1);
-    l.newline = false;
-    return l;
-}
-
-Log Log::w() {
-    Log l;
-    l.header = head(2);
-    l.newline = false;
-    return l;
-}
-
-Log Log::e() {
-    Log l;
-    l.header = head(3);
-    l.newline = false;
-    return l;
-}
-
-char endl(){
-    return '\n';
-}
-
+Log Log::i = Log(head(0));
+Log Log::d = Log(head(1));
+Log Log::w = Log(head(2));
+Log Log::e = Log(head(3));

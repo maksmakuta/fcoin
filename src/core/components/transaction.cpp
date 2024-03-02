@@ -25,7 +25,7 @@ void transaction::deserialize(bytebuff & buff){
     setOutputs(buff.getVH384());
 }
 
-bytebuff transaction::serialize(){
+bytebuff transaction::serialize() const {
     bytebuff buff;
     buff.put(getTXID());
     buff.put(getBlock());

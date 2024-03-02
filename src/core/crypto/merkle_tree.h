@@ -18,6 +18,10 @@ public:
     static hash384 fast384(const vec<str>& inputs);
     static hash512 fast512(const vec<str>& inputs);
 
+    static hash256 fastH256(const vec<hash256>& inputs);
+    static hash384 fastH384(const vec<hash384>& inputs);
+    static hash512 fastH512(const vec<hash512>& inputs);
+
 private:
     u32 size = 256;
     vec<str> items;
