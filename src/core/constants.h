@@ -4,6 +4,7 @@
 #include <array>
 #include <string>
 #include <sstream>
+#include <optional>
 #include <vector>
 
 #define BLOCK_DB "blocks"
@@ -34,6 +35,9 @@ typedef double  f64;
 
 using str = std::string;
 using strss = std::stringstream;
+
+template<typename T>
+using opt = std::optional<T>;
 
 template<typename T>
 using vec = std::vector<T>;

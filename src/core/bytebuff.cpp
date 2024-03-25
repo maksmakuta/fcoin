@@ -4,8 +4,6 @@
 #include "bytebuff.h"
 #include "logger.h"
 
-#define is(A,B) std::is_same<A,B>::value
-
 bytebuff::bytebuff(const str& hexData){
     load(hexData);
 }
@@ -179,55 +177,4 @@ void bytebuff::load(const vec<u8>& input){
     data.clear();
     data.reserve(input.size());
     data.insert(data.begin(),input.begin(), input.end());
-}
-
-template<class T>
-T bytebuff::get(){
-    if(is(T,u8) || is(T,u16) ||is(T,u32) ||is(T,u64) ||
-       is(T,i8) || is(T,i16) ||is(T,i32) ||is(T,i64)) {
-        T value = 0;
-        for (u32 i = 0; i < sizeof(T); i++) {
-            value |= (T) data[pos] << (8 * i);
-            pos++;
-        }
-        return value;
-    }else{
-        Log::e << "Unsupported type" << typeid(T).name() << endl;
-        return (T)null;
-    }
-}
-
-template<class T>
-void bytebuff::put(T item){
-    if(is(T,u8) || is(T,u16) ||is(T,u32) ||is(T,u64) ||
-       is(T,i8) || is(T,i16) ||is(T,i32) ||is(T,i64)) {
-        u32 len = sizeof(T);
-        while (len > 0) {
-            u8 t = (u8) item;
-            data.push_back(t);
-            item = item >> 8;
-            len--;
-        }
-    }else{
-        Log::e << "Unsupported type" << typeid(T).name() << endl;
-    }
-}
-
-template<class T>
-vec<T> bytebuff::getVec(){
-    u32 size = get<u32>();
-    vec<T> items;
-    for(u32 i = 0; i < size;i++){
-        T temp = get<T>();
-        items.push_back(temp);
-    }
-    return items;
-}
-
-template<class T>
-void bytebuff::putVec(const vec<T>& items){
-    put<u32>(items.size());
-    for(T item : items){
-        put<T>(item);
-    }
 }

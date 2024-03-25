@@ -3,20 +3,25 @@
 
 #include "../core/app.h"
 #include "../core/components/blockchain.h"
-#include "../core/net/pool.h"
+#include "../core/net/peer.h"
 
 class NodeApp : public app{
 private:
-    pool p;
+    peer p;
     blockchain bc;
+    bool isRun = true;
 public:
     explicit NodeApp(int,char**);
-    ~NodeApp();
+    ~NodeApp() = default;
     static void help();
     i32 exec();
 private:
     void setup();
     void loop();
+    void close();
+
+    void loadPeers(const str& f);
+
 };
 
 #endif //FCOIN_NODE_APP_H

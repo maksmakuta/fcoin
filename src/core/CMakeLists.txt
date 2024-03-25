@@ -57,8 +57,9 @@ add_library(fcoin_core SHARED
         wallet.h
         net/peer.cpp
         net/peer.h
-        net/pool.cpp
-        net/pool.h
+        net/net_errors.h
+        net/net_error.cpp
+        components/role.h
 )
 
 target_include_directories(fcoin_core PUBLIC leveldb Sockpp::sockpp gmp)

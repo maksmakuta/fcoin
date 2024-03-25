@@ -6,7 +6,7 @@
 
  FCoin has few types of nodes:
   - FULL        (multiway)
-  - MINER       (1-way)        
+  - MINER       (1-way)
   - EXPLORER    (1-way)
   - WALLET      (1-way)
 
@@ -49,11 +49,17 @@
 
  All packets consist of:
 
-| name         | size (bytes) |
-|--------------|--------------|
-| command code | 1            |
-| error code   | 1            |
-| data         | any          |
+| name         | size (bytes)  |
+|--------------|---------------|
+| command code | 1             |
+| data         | any           |
 
- Response also contains command code to verify responses, because all data transferred in binary format.
+When error thrown packet consist of:
+
+| name               | size (bytes) |
+|--------------------|--------------|
+| error command code | 1            |
+| error code         | 1            |
+
+ Response also contains command code to verify responses, because all data transferred in binary format.  
  Check [commands.h](../src/core/net/commands.h) for more details

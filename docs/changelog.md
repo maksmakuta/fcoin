@@ -1,5 +1,14 @@
 ## FCoin changelog
 
+### v. 0.5.1 (beta)
+ - peer handle other peers
+ - verify peers on connect
+ - refactor some defines into enums
+ - add role definition 
+ - fix bytebuff templates errors with compilation
+ - base node app implementation 
+   - except network operations and data processing
+
 ### v. 0.5.0 (beta)
  - add simple docs for apps: node and miner
  - remove zmq library
