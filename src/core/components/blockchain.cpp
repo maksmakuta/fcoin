@@ -1,12 +1,26 @@
 #include "blockchain.h"
 #include "../utils.h"
+#include <filesystem>
+
+//
+//void checkDir(){
+//    char* h = getenv("HOME");
+//    str home =  h ? h : "";
+//    auto path = std::filesystem::path( home + "/.fcoin");
+//    if(!std::filesystem::exists(path)){
+//        std::filesystem::create_directories(path);
+//    }
+//}
 
 blockchain::blockchain(){
-    block_db    = db<block>(BLOCK_DB);
-    tx_db       = db<transaction>(TZ_DB);
-    txints_db   = db<transaction_input>(INPUTS_DB);
-    txouts_db   = db<transaction_output>(OUTPUTS_DB);
-    utxo_db     = db<transaction_output>(UTXO_DB);
+    //checkDir(); create folder in $HOME/.fcoin
+    // for testing purposes better to temporary use /tmp/fcoin
+    std::filesystem::create_directories("/tmp/fcoin");
+    block_db    = db<block>("/tmp/fcoin/" BLOCK_DB);
+    tx_db       = db<transaction>("/tmp/fcoin/" TZ_DB);
+    txints_db   = db<transaction_input>("/tmp/fcoin/" INPUTS_DB);
+    txouts_db   = db<transaction_output>("/tmp/fcoin/" OUTPUTS_DB);
+    utxo_db     = db<transaction_output>("/tmp/fcoin/" UTXO_DB);
 }
 
 void blockchain::putBlock(const block& b) const{

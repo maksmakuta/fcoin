@@ -2,26 +2,21 @@
 #define FCOIN_NODE_APP_H
 
 #include "../core/app.h"
-#include "../net/peer.h"
 #include "../core/components/blockchain.h"
+#include "../core/net/pool.h"
 
 class NodeApp : public app{
+private:
+    pool p;
+    blockchain bc;
 public:
     explicit NodeApp(int,char**);
     ~NodeApp();
-
-    void initSocket();
-    void freeSocket();
-
-    [[noreturn]] void run();
-
+    static void help();
+    i32 exec();
 private:
-    str work(u8 cmd);
-
-    blockchain bc;
-    peer<FULL> sock;
-    bool isWork = true;
-    vec<u8> data;
+    void setup();
+    void loop();
 };
 
 #endif //FCOIN_NODE_APP_H

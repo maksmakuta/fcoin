@@ -3,13 +3,17 @@
  Docs for fcoin are in active development.  
  You can see docs for: 
 
- - [Coin System](coin_system.md)
+ - [Coins](coins.md)
  - [DB](db.md)
  - [Network](net.md)
  - [Transactions](transaction.md)
  - [PoV](PoV.md)
  - [Wallet](wallet.md)
 
- Also, you can see [changelog](changelog.md).
+Docs for apps:
+ - [Node](app/node.md)
+ - [Miner](app/miner.md)
+
+Also, you can see [changelog](changelog.md).
 
 

@@ -1,4 +1,5 @@
-#include <iostream>
+#include "../core/net/peer.h"
+
 /**
  * usage: ./explorer --node localhost:9000 --find_wallet 123456789
  * usage: ./explorer --localnode --find 12345789
@@ -7,6 +8,7 @@
  *
  * --node IP:PORT           specify node to comunicate with
  * --localnode              connect to localhost:BASE_PORT running node
+ * --local PATH             use node files at PATH locally without connecting
  * --find HASH              find any info about hash
  * --find_wallet HASH       find wallet and print all info about it
  * --find_block HASH        find block by hash
@@ -18,6 +20,5 @@
  * --miners_info            print info about miners
  */
 int main(int argc, char** argv){
-    std::cout << "Hello, Explorer!" << std::endl;
     return 0;
 }

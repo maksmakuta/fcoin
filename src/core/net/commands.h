@@ -9,14 +9,17 @@
 //      NAME            CODE // ARGS
 #define NO_CMD          0x00
 
-#define PING            0x01
-#define PONG            0x02
+#define PING            0x01 // NONE
+#define PONG            0x02 // Node
+#define PONG_M          0x03 // Miner
+#define PONG_W          0x04 // Wallet
+#define PONG_E          0x05 // Explorer
 
 #define SYNC_BLK        0x11 // HASH
 #define SYNC_TX         0x12 // TXID
 #define SYNC_TXI        0x13 // TXI HASH
 #define SYNC_TXO        0x14 // TXO HASH
-#define SYNC_CHAIN      0x15 // ???
+#define SYNC_CHAIN      0x15 // LAST BLOCK HASH
 #define SYNC_PEER       0x1F //
 
 #define DATA_MEMPOOL    0x20 // NONE

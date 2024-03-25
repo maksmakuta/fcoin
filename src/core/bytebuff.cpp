@@ -9,6 +9,7 @@
 bytebuff::bytebuff(const str& hexData){
     load(hexData);
 }
+
 bytebuff::bytebuff(const vec<u8>& binData){
     load(binData);
 }
@@ -230,4 +231,3 @@ void bytebuff::putVec(const vec<T>& items){
         put<T>(item);
     }
 }
-

@@ -1,7 +1,7 @@
 # fcoin
 
 Cryptocurrency with Proof of Vote (PoV) consensus algorithm written in C++  
-In development.
+In development.  
 
 ## Dependencies
 
@@ -9,9 +9,11 @@ In development.
  - CMake 3.20+ (for build)
  - levelDB 1.20+
  - GMP 6.0.0+
- - [zmq](https://github.com/zeromq/libzmq)
+ - [sockpp](https://github.com/fpagliughi/sockpp/)
  - doctest (only for tests)
- 
+
+ Developed and tested on ArchLinux with clang.
+
 ## Docs
 
  Docs in active development.

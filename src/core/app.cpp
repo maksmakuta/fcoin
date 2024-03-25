@@ -4,7 +4,6 @@
 #define ARG_SHORT "-"
 #define ARG_LONG "--"
 
-
 /**
  * parse args:
  *  -arg name
@@ -42,8 +41,10 @@ app::app(int count ,char** data){
             values.push_back(arg);
         }
     }
-    args[name] = values;
-    values.clear();
+    if(!name.empty()) {
+        args[name] = values;
+        values.clear();
+    }
 }
 vec<str> app::split(const str& input, char delimetr = ','){
     vec<str> result;
@@ -59,7 +60,7 @@ vec<str> app::get(const str& key){
     if(exist(key)) {
         return args[key];
     }else{
-        Log::w << "Arg " << key << " is not exist";
+        Log::w << "Arg " << key << " is not exist" << '\n';
         return vec<str>{};
     }
 }
@@ -67,15 +68,3 @@ vec<str> app::get(const str& key){
 bool app::exist(const str& key){
     return args.contains(key);
 }
-
-//void app::debug(){
-//    for(auto & arg : args){
-//        Log::i(arg.first);
-//        strss ss;
-//        for(u16 j = 0; j < (u16)arg.second.size();j++){
-//            ss << arg.second[j] << " ";
-//        }
-//        Log::i(strss() << "Args : " << ss.str());
-//        Log::i("");
-//    }
-//}

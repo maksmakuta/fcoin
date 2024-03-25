@@ -3,16 +3,15 @@
 #define DOCTEST_CONFIG_SUPER_FAST_ASSERTS
 #include <doctest/doctest.h>
 
+#include "../src/core/bigint.h"
+#include "../src/core/components/coins.h"
+#include "../src/core/components/block.h"
+#include "../src/core/crypto/PoV.h"
 #include "../src/core/crypto/sha/sha256.h"
 #include "../src/core/crypto/sha/sha384.h"
 #include "../src/core/crypto/sha/sha512.h"
 #include "../src/core/crypto/ripemd160.h"
 #include "../src/core/wallet.h"
-#include "../src/core/components/coins.h"
-#include "../src/core/components/block.h"
-#include "../src/core/utils.h"
-#include "../src/core/bigint.h"
-#include "../src/core/crypto/secp256k1.h"
 
 TEST_CASE("hashing text with sha256"){
     CHECK_EQ(sha256::fast("hello"),"2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824");
@@ -116,7 +115,7 @@ TEST_CASE("bytebuff"){
     srand(time(null));
 
     u32 count = 1000;
-    Log::i() << "count = " << count << endl();
+    Log::i << "count = " << count << endl;
 
     vec<u8 >  u8arr; u8arr .reserve(count);
     vec<u16> u16arr; u16arr.reserve(count);
@@ -127,7 +126,7 @@ TEST_CASE("bytebuff"){
     vec<i32> i32arr; i32arr.reserve(count);
     vec<i64> i64arr; i64arr.reserve(count);
 
-    Log::i() << "generate vectors"<< endl();
+    Log::i << "generate vectors"<< endl;
 
     for(u32 i = 0; i < count;i++){
         u8arr .push_back((u8 )rand() % (sizeof(u8 )*8));
@@ -140,7 +139,7 @@ TEST_CASE("bytebuff"){
         i64arr.push_back((i64)rand() % (sizeof(i64)*8));
     }
 
-    Log::i() << "insert random data"<< endl();
+    Log::i << "insert random data"<< endl;
 
     buff.putVec<u8 >(u8arr );
     buff.putVec<u16>(u16arr);
@@ -151,11 +150,11 @@ TEST_CASE("bytebuff"){
     buff.putVec<i32>(i32arr);
     buff.putVec<i64>(i64arr);
 
-    Log::i() << "write into buffer"<< endl();
+    Log::i << "write into buffer"<< endl;
 
     str sBuff = buff.string();
-    Log::i() << "buff = " << sBuff << endl();
-    Log::i() << " len = " << sBuff.length() / 2 << endl();
+    Log::i << "buff = " << sBuff << endl;
+    Log::i << " len = " << sBuff.length() / 2 << endl;
 
     vec<u8 >  u8C = buff.getVec<u8 >();
     vec<u16> u16C = buff.getVec<u16>();
@@ -166,7 +165,7 @@ TEST_CASE("bytebuff"){
     vec<i32> i32C = buff.getVec<i32>();
     vec<i64> i64C = buff.getVec<i64>();
 
-    Log::i() << "read from buffer"<< endl();
+    Log::i << "read from buffer"<< endl;
 
     isEqualVec(u8arr ,u8C)
     isEqualVec(u16arr,u16C)
@@ -187,8 +186,8 @@ TEST_CASE("bytebuff"){
     buff.put(h2);
     buff.put(h3);
 
-    Log::i() << "len  = " << buff.len() << endl();
-    Log::i() << "data = " << buff.string() << endl();
+    Log::i << "len  = " << buff.len() << endl;
+    Log::i << "data = " << buff.string() << endl;
 
     hash256 h10 = buff.getH256();
     hash384 h20 = buff.getH384();
@@ -212,4 +211,17 @@ TEST_CASE("block de/serialization"){
     block b;
     b.deserialize(blockBuff);
     CHECK_EQ(blk == b,true);
+}
+
+[[maybe_unused]] void pov(){
+    srand(time(nullptr));
+    PoV pov;
+    for(u32 i = 0; i < rand() % 1000;i++){
+        auto w = secp256k1::generatePair();
+        str seedHash = sha512::fast(std::to_string(rand()));
+        u64 seed = std::stoull(seedHash.substr(rand() % (seedHash.size() - 8), 8), nullptr, 16);
+        pov.add(seed,w.pub);
+    }
+    Log::i << "Winner : " << to_string(pov.getWinner()) << '\n';
+    pov.list();
 }

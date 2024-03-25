@@ -23,7 +23,7 @@
      vec<Miner> miners;
    
      ...
-     // register new miner
+     // register new miner.md
      miners.push_back({pub_key,miner_seed,0});
      ...
     

@@ -1,5 +1,10 @@
 ## FCoin changelog
 
+### v. 0.5.0 (beta)
+ - add simple docs for apps: node and miner
+ - remove zmq library
+ - add sockpp library
+
 ### v. 0.4.7 (beta)
  - remove ed25519 algorithm due to optimization and usability and simplicity
  - add generic block function in block

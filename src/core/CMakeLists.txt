@@ -6,7 +6,9 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 
 find_package(PkgConfig)
 find_package(Threads REQUIRED)
+find_package(sockpp REQUIRED)
 find_package(leveldb REQUIRED)
+pkg_check_modules(gmp REQUIRED gmp)
 
 add_library(fcoin_core SHARED
         app.cpp
@@ -48,23 +50,19 @@ add_library(fcoin_core SHARED
         interface/serializable.h
         logger.cpp
         logger.h
+        net/commands.h
         utils.cpp
         utils.h
         wallet.cpp
         wallet.h
+        net/peer.cpp
+        net/peer.h
+        net/pool.cpp
+        net/pool.h
 )
 
-pkg_check_modules(gmp REQUIRED gmp)
-if(GMP_FOUND)
-    target_include_directories(fcoin_core PUBLIC ${GMP_INCLUDE_DIRS})
-    target_link_libraries(fcoin_core PUBLIC ${GMP_LIBRARIES})
-endif()
-
-target_include_directories(fcoin_core PUBLIC zmq sodium)
-target_link_libraries(fcoin_core PUBLIC zmq sodium)
-
-target_include_directories(fcoin_core PUBLIC leveldb)
-target_link_libraries(fcoin_core PUBLIC leveldb)
+target_include_directories(fcoin_core PUBLIC leveldb Sockpp::sockpp gmp)
+target_link_libraries(fcoin_core PUBLIC leveldb Sockpp::sockpp gmp)
 
 include(GNUInstallDirs)
 install(TARGETS fcoin_core

@@ -13,18 +13,18 @@ template<class T>
 class db {
 public:
     db() = default;
+    db(const db<T>&) = delete;
+    ~db() = default;
+
     explicit db(const str& dir){
         if(!std::is_base_of<serializable,T>::value){
             Log::e << "Type " << typeid(T).name() << " must implement serializable interface" << endl;
         }
         this->options.create_if_missing = true;
-        auto status = leveldb::DB::Open(options,dir,&this->_db);
+        auto status = leveldb::DB::Open(options,dir,&_db);
         if(!status.ok()){
             Log::e << status.ToString() << endl;
         }
-    }
-    ~db(){
-        delete _db;
     }
 
     void push(const str& id,const T& item) const{
@@ -73,11 +73,9 @@ public:
     [[nodiscard]] bool exist(const str& id) const{
         return pull(id) != null;
     }
-
-    db(const db<T>&) = delete;
 private:
     leveldb::Options options;
-    leveldb::DB* _db {};
+    leveldb::DB* _db = null;
 };
 
 #endif //FCOIN_DB_H

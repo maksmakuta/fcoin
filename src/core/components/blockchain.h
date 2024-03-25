@@ -7,8 +7,13 @@
 #include "transaction_input.h"
 #include "transaction_output.h"
 
+struct blockchain_header{
+    hash256 lastBlock;
+};
+
 class blockchain {
 private:
+    blockchain_header header;
     db<block> block_db;
     db<transaction> tx_db;
     db<transaction_input> txints_db;

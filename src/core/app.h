@@ -5,15 +5,15 @@
 #include "constants.h"
 
 class app{
+private:
+    std::map<str,vec<str>> args;
 public:
     app(int,char**);
     ~app() = default;
     vec<str> get(const str&);
     bool exist(const str&);
 private:
-    std::map<str,vec<str>> args;
-
-    static vec<str> split(const str& input, char delimetr);
+    static vec<str> split(const str& input, char delimeter);
 };
 
 #endif //FCOIN_APP_H

@@ -6,20 +6,16 @@
 #include <sstream>
 #include <vector>
 
-#define DATA_DIR "data"
-
 #define BLOCK_DB "blocks"
 #define TZ_DB "transactions"
 #define INPUTS_DB "inputs"
 #define OUTPUTS_DB "outputs"
 #define UTXO_DB "utxo"
 
-#define NODE_PORT       "8888"
-#define MINER_PORT      "8900"
-#define WALLET_PORT     "8901"
-#define EXPLORER_PORT   "8902"
-
-#define TCP "tcp://"
+#define NODE_PORT       8888
+#define MINER_PORT      8900
+#define WALLET_PORT     8901
+#define EXPLORER_PORT   8902
 
 typedef int8_t  i8;
 typedef int16_t i16;
