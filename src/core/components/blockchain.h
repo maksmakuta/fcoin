@@ -13,7 +13,7 @@ struct blockchain_header{
 
 class blockchain {
 private:
-    blockchain_header header;
+    blockchain_header header{};
     db<block> block_db;
     db<transaction> tx_db;
     db<transaction_input> txints_db;
@@ -21,6 +21,7 @@ private:
     db<transaction_output> utxo_db;
 public:
     blockchain();
+    ~blockchain();
 
     void putBlock(const block&) const;
     void putTx(const transaction&) const;
@@ -39,6 +40,10 @@ public:
     void delTxIn(const str&) const;
     void delTxOut(const str&) const;
     void delUtxo(const str&) const;
+
+private:
+    void loadHeader();
+    void saveHeader() const;
 
 };
 

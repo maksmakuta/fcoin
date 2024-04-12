@@ -12,6 +12,8 @@ public:
     ~app() = default;
     vec<str> get(const str&);
     bool exist(const str&);
+
+    virtual int exec();
 private:
     static vec<str> split(const str& input, char delimeter);
 };

@@ -3,7 +3,9 @@ project(fcoin_wallet LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(fcoin_wallet wallet_main.cpp)
+add_executable(fcoin_wallet wallet_main.cpp
+        wallet_app.cpp
+        wallet_app.h)
 
 target_include_directories(fcoin_wallet PUBLIC "${CMAKE_SOURCE_DIR}/core")
 target_link_libraries(fcoin_wallet PUBLIC fcoin_core)

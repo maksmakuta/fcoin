@@ -1,5 +1,11 @@
 ## FCoin changelog
 
+### v. 0.5.2 (beta)
+ - load/save header of blockchain and wallet data
+ - template functions to convert arr with any size to string and reverse
+ - add links in readme
+ - 
+
 ### v. 0.5.1 (beta)
  - peer handle other peers
  - verify peers on connect

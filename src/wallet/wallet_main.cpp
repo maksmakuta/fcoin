@@ -1,7 +1,5 @@
-#include <iostream>
-#include <sockpp/tcp_connector.h>
-#include "../core/bytebuff.h"
-#include "../core/crypto/sha/sha256.h"
+#include "wallet_app.h"
+#include "../core/utils.h"
 
 /**
  * usage: ./wallet --send ADDRESS --amount 56.16 --confirm --push
@@ -19,7 +17,10 @@
  * --list           list of all addresses with balance
  * --push           broadcast transaction to network
  */
-int main(/*int argc, char **argv*/) {
-    return 0;
+int main(int argc, char **argv) {
+    hash256 ll = sha256::fastH("56");
+    Log::i << "out: " << to_string(ll) << endl;
+    wallet_app wa(argc,argv);
+    return wa.exec();
 }
 

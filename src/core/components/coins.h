@@ -3,17 +3,17 @@
 
 #include "../constants.h"
 
-class Coins{
+class coins{
 public:
 
-    explicit Coins(f64 i);
-    explicit Coins(u64 i);
+    explicit coins(f64 i);
+    explicit coins(u64 i);
 
     [[nodiscard]] u64 enc() const;
 
-    static Coins MINE(); //                  100.0000
-    static Coins MIN();  //                    0.0001
-    static Coins MAX();  // 10000000000000000000.0000
+    static coins MINE(); //                  100.0000
+    static coins MIN();  //                    0.0001
+    static coins MAX();  // 10000000000000000000.0000
 private:
     u64 raw;
 };

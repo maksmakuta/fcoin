@@ -1,26 +1,25 @@
 #include "coins.h"
-#include <cmath>
 
-Coins::Coins(f64 i){
+coins::coins(f64 i){
     this->raw = (u64)(i * 10000.F);
 }
 
-Coins::Coins(u64 i){
+coins::coins(u64 i){
     this->raw = i;
 }
 
-u64 Coins::enc() const{
+u64 coins::enc() const{
     return this->raw;
 }
 
-Coins Coins::MINE(){
-    return Coins(1000000UL);
+coins coins::MINE(){
+    return coins(1000000UL);
 }
 
-Coins Coins::MIN(){
-    return Coins(1UL);
+coins coins::MIN(){
+    return coins(1UL);
 }
 
-Coins Coins::MAX(){
-    return Coins(10000000000000000000UL);
+coins coins::MAX(){
+    return coins(10000000000000000000UL);
 }

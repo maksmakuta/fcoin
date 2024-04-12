@@ -1,9 +1,10 @@
 #include "blockchain.h"
 #include "../utils.h"
 #include <filesystem>
+#include <fstream>
 
 //
-//void checkDir(){
+//void checkDir(){ // need to make similar for win and mac
 //    char* h = getenv("HOME");
 //    str home =  h ? h : "";
 //    auto path = std::filesystem::path( home + "/.fcoin");
@@ -14,13 +15,44 @@
 
 blockchain::blockchain(){
     //checkDir(); create folder in $HOME/.fcoin
-    // for testing purposes better to temporary use /tmp/fcoin
-    std::filesystem::create_directories("/tmp/fcoin");
-    block_db    = db<block>("/tmp/fcoin/" BLOCK_DB);
-    tx_db       = db<transaction>("/tmp/fcoin/" TZ_DB);
-    txints_db   = db<transaction_input>("/tmp/fcoin/" INPUTS_DB);
-    txouts_db   = db<transaction_output>("/tmp/fcoin/" OUTPUTS_DB);
-    utxo_db     = db<transaction_output>("/tmp/fcoin/" UTXO_DB);
+    // for testing purposes better to temporary use /tmp/fcoin/
+    std::filesystem::create_directories(DATA_LOC);
+    block_db    = db<block>(DATA_LOC BLOCK_DB);
+    tx_db       = db<transaction>(DATA_LOC TZ_DB);
+    txints_db   = db<transaction_input>(DATA_LOC INPUTS_DB);
+    txouts_db   = db<transaction_output>(DATA_LOC OUTPUTS_DB);
+    utxo_db     = db<transaction_output>(DATA_LOC UTXO_DB);
+    loadHeader();
+}
+
+blockchain::~blockchain(){
+    saveHeader();
+}
+
+void blockchain::loadHeader(){
+    std::ifstream f(DATA_LOC "header");
+    bytebuff buff((std::stringstream() << f.rdbuf()).str());
+    if(!buff.string().empty()) {
+        hash256 top = buff.getH256();
+        header.lastBlock = top;
+    }else{
+        Log::w << "header file is empty" << endl;
+        block b = block::generic();
+        putBlock(b);
+        header.lastBlock = b.getHash();
+        saveHeader();
+    }
+    buff.clear();
+    f.close();
+}
+
+void blockchain::saveHeader() const{
+    std::ofstream f(DATA_LOC "header");
+    bytebuff b;
+    b.put(header.lastBlock);
+    f << b.string();
+    b.clear();
+    f.close();
 }
 
 void blockchain::putBlock(const block& b) const{

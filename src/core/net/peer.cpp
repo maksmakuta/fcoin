@@ -1,9 +1,16 @@
 #include "peer.h"
 #include "commands.h"
 
-peer::peer(u16 port){
+peer::peer(){
     sockpp::initialize();
+}
+
+peer::peer(u16 port) : peer(){
     open(port);
+}
+
+peer::peer(role r) : peer(){
+    open(r);
 }
 
 peer::~peer(){
@@ -14,8 +21,44 @@ peer::~peer(){
 }
 
 void peer::open(u16 port){
+    switch (port){
+        case NODE_PORT:
+            type = role::NODE;
+            break;
+        case WALLET_PORT:
+            type = role::WALLET;
+            break;
+        case EXPLORER_PORT:
+            type = role::EXPLORER;
+            break;
+        case MINER_PORT:
+            type = role::MINER;
+            break;
+        default:
+            Log::w << "Unknown peer type with port " << port << endl;
+            break;
+    }
     acceptor = sockpp::tcp_acceptor(port);
     connector = sockpp::tcp_connector();
+}
+
+void peer::open(role r){
+    u16 port = 9999;
+    switch (r){
+        case role::NODE:
+            port = NODE_PORT;
+            break;
+        case role::WALLET:
+            port = WALLET_PORT;
+            break;
+        case role::EXPLORER:
+            port = EXPLORER_PORT;
+            break;
+        case role::MINER:
+            port = MINER_PORT;
+            break;
+    }
+    open(port);
 }
 
 void peer::send(const bytebuff& buff){
@@ -125,7 +168,10 @@ void peer::broadcast(const bytebuff& b){
     }
 }
 
-
 u32 peer::peerCount(){
     return peers.size();
+}
+
+role peer::getRole(){
+    return type;
 }

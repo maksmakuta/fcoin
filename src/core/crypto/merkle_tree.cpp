@@ -65,15 +65,27 @@ hash512 merkle_tree::fast512(const vec<str>& inputs){
 }
 
 hash256 merkle_tree::fastH256(const vec<hash256>& inputs){
-    return fast256( mapTo<hash256,str>(inputs, [](const hash256& i){ return to_string(i); }) );
+    vec<str> in;
+    for(const auto it : inputs){
+        in.push_back(to_string(it));
+    }
+    return fast256(in);
 }
 
 hash384 merkle_tree::fastH384(const vec<hash384>& inputs){
-    return fast384( mapTo<hash384,str>(inputs, [](const hash384& i){ return to_string(i); }) );
+    vec<str> in;
+    for(const auto it : inputs){
+        in.push_back(to_string(it));
+    }
+    return fast384(in);
 }
 
 hash512 merkle_tree::fastH512(const vec<hash512>& inputs){
-    return fast512( mapTo<hash512,str>(inputs, [](const hash512& i){ return to_string(i); }) );
+    vec<str> in;
+    for(const auto it : inputs){
+        in.push_back(to_string(it));
+    }
+    return fast512(in);
 }
 
 str merkle_tree::hash(const str &input) const {

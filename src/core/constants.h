@@ -7,11 +7,13 @@
 #include <optional>
 #include <vector>
 
-#define BLOCK_DB "blocks"
-#define TZ_DB "transactions"
-#define INPUTS_DB "inputs"
-#define OUTPUTS_DB "outputs"
-#define UTXO_DB "utxo"
+#define DATA_LOC        "/tmp/fcoin/"
+
+#define BLOCK_DB        "blocks"
+#define TZ_DB           "transactions"
+#define INPUTS_DB       "inputs"
+#define OUTPUTS_DB      "outputs"
+#define UTXO_DB         "utxo"
 
 #define NODE_PORT       8888
 #define MINER_PORT      8900
